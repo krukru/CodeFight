@@ -72,6 +72,7 @@ public class Fighter {
   }
 
   public void recoverStamina() {
+    this.stance = Stance.NORMAL;
     this.stamina = Math.min(MAX_STAMINA, stamina + 25);
     Logger.instance().recoverStamina(this, 25);
   }

@@ -15,6 +15,10 @@ public class FighterStatus {
     this.fighter = fighter;
   }
 
+  public boolean isAttacking() {
+    return fighter.isAttacking();
+  }
+
   public FighterStatus() {
 
   }

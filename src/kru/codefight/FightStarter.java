@@ -5,6 +5,7 @@ import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.FighterColor;
 import kru.codefight.strategy.AbstractFighterStrategy;
+import kru.codefight.strategy.CounterPuncher;
 import kru.codefight.strategy.MeSmashStrategy;
 import kru.codefight.strategy.NewbieStrategy;
 import kru.codefight.strategy.OneTwoStrategy;
@@ -12,7 +13,7 @@ import kru.codefight.strategy.OneTwoStrategy;
 public class FightStarter {
 
   private static final AbstractFighterStrategy redStrategy = new OneTwoStrategy();
-  private static final AbstractFighterStrategy blueStrategy = new MeSmashStrategy();
+  private static final AbstractFighterStrategy blueStrategy = new CounterPuncher();
 
   public static void main(String[] args) {
     Fighter redFighter = new Fighter(redStrategy, FighterColor.RED);
