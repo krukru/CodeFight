@@ -1,6 +1,8 @@
 package kru.codefight.fighter;
 
+import kru.codefight.events.FightListener;
 import kru.codefight.events.FighterApi;
+import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
 
@@ -13,9 +15,12 @@ public class Fighter {
   private int hitPoints;
   private int stamina;
   private Stance stance;
+  private Fighter opponent;
   private FighterApi api;
 
   private volatile boolean fightActive;
+
+  private FightListener listener;
 
   public FighterApi Api() {
     return api;
@@ -23,6 +28,18 @@ public class Fighter {
 
   public int getHitPoints() {
     return hitPoints;
+  }
+
+  public Stance getStance() {
+    return stance;
+  }
+
+  public void setStance(Stance stance) {
+    this.stance = stance;
+  }
+
+  public Fighter getOpponent() {
+    return opponent;
   }
 
   public Fighter(AbstractFighterStrategy strategy) {
@@ -39,22 +56,52 @@ public class Fighter {
   private void initFighterStats(int startingHitPoints, int startingStamina) {
     this.hitPoints = startingHitPoints;
     this.stamina = startingStamina;
-    this.stance = Stance.OPEN;
+    this.stance = Stance.NORMAL;
   }
 
-  public void startFighting() {
-    fightActive = true;
+  public void startFighting(Fighter opponent) {
+    this.opponent = opponent;
+    this.fightActive = true;
     while (fightActive) {
       strategy.act();
     }
   }
 
   public void stopFighting() {
-    fightActive = false;
+    this.fightActive = false;
   }
 
   public void takeDamage(int damage) {
+    if (damage < 0) {
+      throw new IllegalArgumentException("Negative damage");
+    }
     this.hitPoints -= damage;
   }
 
+  public boolean canSeeOpponent() {
+    return stance != Stance.BLOCKING;
+  }
+
+  public void subscribeToAttackHappened(FightListener listener) {
+    if (listener == null) {
+      throw new NullPointerException("If you want to unsubscribe, there's a method for that.");
+    }
+    this.listener = listener;
+  }
+
+  public void unsubscribeFromAttackHappened() {
+    this.listener = null;
+  }
+
+  public void attackHappened(Fighter fighter, AbstractAttack attack) {
+    if (listener == null) {
+      throw new NullPointerException("Attack happened, but no listener was set!");
+    }
+    int castTime = attack.getCastTimeInMs();
+    try {
+      Thread.sleep(castTime);
+    } catch (InterruptedException e) {
+      //Attack was interrupted
+    }
+  }
 }

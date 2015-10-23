@@ -1,6 +1,8 @@
 package kru.codefight.events;
 
 import kru.codefight.fighter.Fighter;
+import kru.codefight.fighter.FighterStatus;
+import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 
 public class FighterApi {
@@ -11,29 +13,20 @@ public class FighterApi {
     this.fighter = fighter;
   }
 
-  private FightListener listener;
-
-  public void subscribeToAttackHappened(FightListener listener) {
-    if (listener == null) {
-      throw new NullPointerException("If you want to unsubscribe, there's a method for that.");
-    }
-    this.listener = listener;
-  }
-
-  public void unsubscribeFromAttackHappened() {
-    this.listener = null;
-  }
-
   public void attack(AbstractAttack attack) {
-    if (listener == null) {
-      throw new NullPointerException("Attack happened, but no listener was set!");
+    fighter.attackHappened(fighter, attack);
+  }
+
+  public void changeStance(Stance stance) {
+    fighter.setStance(stance);
+  }
+
+  public boolean tryScanOpponent(FighterStatus opponentStatus) {
+    if (fighter.canSeeOpponent()) {
+      opponentStatus.setFighter(fighter.getOpponent());
+      return true;
+    } else {
+      return false;
     }
-    int castTime = attack.getCastTimeInMs();
-    try {
-      Thread.sleep(castTime);
-    } catch (InterruptedException e) {
-      //Attack was interrupted
-    }
-    listener.attackHappened(fighter, attack);
   }
 }

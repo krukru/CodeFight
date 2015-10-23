@@ -4,6 +4,7 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
+import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.thread.FightRunner;
 
@@ -20,11 +21,11 @@ public class FightController implements FightListener {
     this.redFighter = redFighter;
     this.blueFighter = blueFighter;
 
-    redFighter.Api().subscribeToAttackHappened(this);
-    blueFighter.Api().subscribeToAttackHappened(this);
+    redFighter.subscribeToAttackHappened(this);
+    blueFighter.subscribeToAttackHappened(this);
 
-    this.redFighterThread = new Thread(new FightRunner(redFighter));
-    this.blueFighterThread = new Thread(new FightRunner(blueFighter));
+    this.redFighterThread = new Thread(new FightRunner(redFighter, blueFighter));
+    this.blueFighterThread = new Thread(new FightRunner(blueFighter, redFighter));
 
     redFighterThread.start();
     blueFighterThread.start();
@@ -40,16 +41,38 @@ public class FightController implements FightListener {
   @Override
   public void attackHappened(Fighter initiator, AbstractAttack attack) {
     Fighter victim = getVictim(initiator);
-    int damage = attack.getFullDamage();
+    resolveAttack(initiator, victim, attack);
+  }
+
+  private void resolveAttack(Fighter initiator, Fighter victim, AbstractAttack attack) {
+    int damage;
+    Stance victimStance = victim.getStance();
+    switch (victimStance) {
+      case NORMAL:
+        damage = attack.getFullDamage();
+        break;
+      case BLOCKING:
+        damage = attack.getBlockedDamage();
+        break;
+      case DODGING:
+        damage = 0;
+        break;
+      default:
+        throw new EnumConstantNotPresentException(victimStance.getClass(), victimStance.toString());
+    }
     victim.takeDamage(damage);
     System.out.println("Red hp:" + redFighter.getHitPoints());
     System.out.println("Blue hp:" + blueFighter.getHitPoints());
     if (victim.getHitPoints() <= 0) {
-      redFighter.stopFighting();
-      blueFighter.stopFighting();
-      redFighter.Api().unsubscribeFromAttackHappened();
-      blueFighter.Api().unsubscribeFromAttackHappened();
+      endFight();
     }
+  }
+
+  private void endFight() {
+    redFighter.stopFighting();
+    blueFighter.stopFighting();
+    redFighter.unsubscribeFromAttackHappened();
+    blueFighter.unsubscribeFromAttackHappened();
   }
 
   private Fighter getVictim(Fighter initiator) {
