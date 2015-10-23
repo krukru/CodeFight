@@ -10,7 +10,7 @@ import kru.codefight.strategy.NewbieStrategy;
 public class FightStarter {
 
   private static final AbstractFighterStrategy redStrategy = new NewbieStrategy();
-  private static final AbstractFighterStrategy blueStrategy = new MeSmashStrategy();
+  private static final AbstractFighterStrategy blueStrategy = new NewbieStrategy();
 
   public static void main(String[] args) {
     Fighter redFighter = new Fighter(redStrategy);

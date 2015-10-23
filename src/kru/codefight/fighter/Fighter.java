@@ -12,16 +12,16 @@ public class Fighter {
   private static final int STARTING_STAMINA = 100;
 
   private AbstractFighterStrategy strategy;
-  private int hitPoints;
+
   private int stamina;
   private Stance stance;
   private Fighter opponent;
   private FighterApi api;
 
-  private boolean isAttacking = false;
-
   private volatile long stunDuration; //in milis
   private volatile boolean fightActive;
+  private volatile int hitPoints;
+  private volatile boolean isAttacking = false;
 
   private FightListener listener;
 
@@ -87,6 +87,7 @@ public class Fighter {
       Thread.sleep(castTime);
     } catch (InterruptedException e) {
       //Attack was interrupted
+      this.isAttacking = false;
       return;
     }
     listener.attackHappened(this, attack);
