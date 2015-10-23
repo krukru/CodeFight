@@ -8,8 +8,8 @@ import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
 
 public class Fighter {
-  private static final int STARTING_HIT_POINTS = 100;
-  private static final int STARTING_STAMINA = 100;
+  private static final int MAX_HIT_POINTS = 100;
+  private static final int MAX_STAMINA = 100;
 
   private AbstractFighterStrategy strategy;
 
@@ -67,6 +67,15 @@ public class Fighter {
     Logger.instance().stanceChange(this, stance);
   }
 
+  public double getAttackIntensityFactor() {
+    return Math.max(0.1, (double)stamina / MAX_STAMINA); //@TODO: neki eksponencijalni pad možda?
+  }
+
+  public void recoverStamina() {
+    this.stamina = Math.min(MAX_STAMINA, stamina + 25);
+    Logger.instance().recoverStamina(this, 25);
+  }
+
   public Fighter getOpponent() {
     return opponent;
   }
@@ -75,9 +84,13 @@ public class Fighter {
     return hitPoints <= 0;
   }
 
+  public int getStamina() {
+    return stamina;
+  }
+
   public Fighter(AbstractFighterStrategy strategy, FighterColor fighterColor) {
     this.api = new FighterApi(this);
-    initFighterStats(STARTING_HIT_POINTS, STARTING_STAMINA);
+    initFighterStats(MAX_HIT_POINTS, MAX_STAMINA);
     if (strategy == null) {
       this.strategy = new NumnutsStrategy();
     } else {
@@ -96,10 +109,10 @@ public class Fighter {
     try {
       Thread.sleep(castTime);
       listener.attackHappened(this, attack);
-      Logger.instance().attack(this, opponent, attack);
     } catch (InterruptedException e) {
       Logger.instance().attackInterrupted(this, attack);
     } finally {
+      this.stamina = Math.max(0, stamina - 10);
       this.stance = Stance.NORMAL;
       this.isAttacking = false;
     }
@@ -144,4 +157,5 @@ public class Fighter {
   public void unsubscribeFromAttackHappened() {
     this.listener = null;
   }
+
 }

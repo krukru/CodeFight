@@ -3,6 +3,7 @@ package kru.codefight.controller;
 import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
+import kru.codefight.logger.Logger;
 import kru.codefight.thread.FighterThread;
 
 public class FightResolver {
@@ -29,6 +30,7 @@ public class FightResolver {
         defenderThread.interrupt();
       }
     }
+    Logger.instance().attack(attacker, defender, attack, damage);
   }
 
   private int getDamage(Fighter attacker, Fighter defender, AbstractAttack attack) {
@@ -36,9 +38,6 @@ public class FightResolver {
     switch (defender.getStance()) {
       case NORMAL:
         result = attack.getFullDamage();
-        if (defender.isAttacking()) {
-          result *= DAMAGE_MULTIPLIER;
-        }
         break;
       case BLOCKING:
         result = attack.getBlockedDamage();
@@ -49,6 +48,10 @@ public class FightResolver {
       default:
         throw new IllegalStateException();
     }
+    if (defender.isAttacking()) {
+      result *= DAMAGE_MULTIPLIER;
+    }
+    result *= attacker.getAttackIntensityFactor();
     return result;
   }
 
@@ -57,9 +60,6 @@ public class FightResolver {
     switch (defender.getStance()) {
       case NORMAL:
         result = attack.getStunDurationInMs();
-        if (defender.isAttacking()) {
-          result = Math.max(STUN_MULTIPLIER * result, MINIMAL_STUN_DURATION);
-        }
         break;
       case BLOCKING:
         result = attack.getStunDurationInMs() / 10;
@@ -70,6 +70,10 @@ public class FightResolver {
       default:
         throw new IllegalStateException();
     }
+    if (defender.isAttacking()) {
+      result = Math.max(STUN_MULTIPLIER * result, MINIMAL_STUN_DURATION);
+    }
+    result *= attacker.getAttackIntensityFactor();
     return result;
   }
 

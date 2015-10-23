@@ -25,6 +25,19 @@ public class FighterApi {
     }
   }
 
+  public void recoverStamina() {
+    fighter.recoverStamina();
+  }
+
+  public void recoverStaminaUpTo(int targetStamina) {
+    if (targetStamina < 0 || targetStamina > 100) {
+      throw new IllegalArgumentException();
+    }
+    while (fighter.getStamina() < targetStamina) {
+      recoverStamina();
+    }
+  }
+
   public boolean tryScanOpponent(FighterStatus opponentStatus) {
     if (!resolveAccumulatedStun()) {
       if (fighter.canSeeOpponent()) {

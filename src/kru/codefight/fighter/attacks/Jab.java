@@ -13,7 +13,7 @@ public class Jab extends AbstractAttack {
 
   @Override
   public int getStaminaCost() {
-    return 0;
+    return 10;
   }
 
   @Override

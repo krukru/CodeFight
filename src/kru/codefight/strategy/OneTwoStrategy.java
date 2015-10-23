@@ -9,5 +9,6 @@ public class OneTwoStrategy extends AbstractFighterStrategy {
     Do().changeStance(Stance.BLOCKING);
     Do().attack(Attacks.Jab);
     Do().attack(Attacks.Jab);
+    Do().recoverStaminaUpTo(80);
   }
 }
