@@ -16,7 +16,7 @@ public class Fighter {
   private Stance stance;
   private Fighter opponent;
   private FighterApi api;
-  private int stunDurationInMs;
+  private long stunDuration; //in milis
 
   private boolean isAttacking = false;
 
@@ -29,6 +29,14 @@ public class Fighter {
   }
 
   public boolean isAttacking() {return isAttacking;}
+
+  public long getStunDuration() {
+    return stunDuration;
+  }
+
+  public void setStunDuration(long stunDuration) {
+    this.stunDuration = stunDuration;
+  }
 
   public int getHitPoints() {
     return hitPoints;
@@ -110,9 +118,5 @@ public class Fighter {
     }
     listener.attackHappened(this, attack);
     this.isAttacking = false;
-  }
-
-  public void stunned(int stunDurationInMs) {
-    this.stunDurationInMs = stunDurationInMs;
   }
 }
