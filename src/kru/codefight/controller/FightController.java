@@ -36,8 +36,7 @@ public class FightController implements FightListener {
       e.printStackTrace();
     }
 
-    FightOutcome result = fightResolver.determineOutcome(redFighter, blueFighter);
-    return result;
+    return fightResolver.determineOutcome(redFighter, blueFighter);
   }
 
   @Override

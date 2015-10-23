@@ -16,10 +16,10 @@ public class Fighter {
   private Stance stance;
   private Fighter opponent;
   private FighterApi api;
-  private long stunDuration; //in milis
 
   private boolean isAttacking = false;
 
+  private volatile long stunDuration; //in milis
   private volatile boolean fightActive;
 
   private FightListener listener;
@@ -123,7 +123,25 @@ public class Fighter {
     } catch (InterruptedException e) {
       //Attack was interrupted
     }
-    listener.attackHappened(this, attack);
+    boolean stunned = resolveStun();
+    if (!stunned) {
+      listener.attackHappened(this, attack);
+    }
     this.isAttacking = false;
+  }
+
+  private boolean resolveStun() {
+    if (stunDuration > 0) {
+      try {
+        Thread.sleep(stunDuration);
+      } catch (InterruptedException e) {
+        //someone woke up the thread! @TODO possible bug!
+      } finally {
+        stunDuration = 0;
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 }
