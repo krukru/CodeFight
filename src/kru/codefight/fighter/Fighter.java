@@ -61,6 +61,10 @@ public class Fighter {
     return opponent;
   }
 
+  public boolean isKnockedOut() {
+    return hitPoints <= 0;
+  }
+
   public Fighter(AbstractFighterStrategy strategy) {
     this.api = new FighterApi(this);
     initFighterStats(STARTING_HIT_POINTS, STARTING_STAMINA);
@@ -70,6 +74,22 @@ public class Fighter {
       this.strategy = strategy;
     }
     this.strategy.setFighter(this);
+  }
+
+  public void attack(AbstractAttack attack) {
+    this.isAttacking = true;
+    if (listener == null) {
+      throw new NullPointerException("Attack happened, but no listener was set!");
+    }
+    int castTime = attack.getCastTimeInMs();
+    try {
+      Thread.sleep(castTime);
+    } catch (InterruptedException e) {
+      //Attack was interrupted
+      return;
+    }
+    listener.attackHappened(this, attack);
+    this.isAttacking = false;
   }
 
   private void initFighterStats(int startingHitPoints, int startingStamina) {
@@ -110,38 +130,5 @@ public class Fighter {
 
   public void unsubscribeFromAttackHappened() {
     this.listener = null;
-  }
-
-  public void attack(AbstractAttack attack) {
-    this.isAttacking = true;
-    if (listener == null) {
-      throw new NullPointerException("Attack happened, but no listener was set!");
-    }
-    int castTime = attack.getCastTimeInMs();
-    try {
-      Thread.sleep(castTime);
-    } catch (InterruptedException e) {
-      //Attack was interrupted
-    }
-    boolean stunned = resolveStun();
-    if (!stunned) {
-      listener.attackHappened(this, attack);
-    }
-    this.isAttacking = false;
-  }
-
-  private boolean resolveStun() {
-    if (stunDuration > 0) {
-      try {
-        Thread.sleep(stunDuration);
-      } catch (InterruptedException e) {
-        //someone woke up the thread! @TODO possible bug!
-      } finally {
-        stunDuration = 0;
-      }
-      return true;
-    } else {
-      return false;
-    }
   }
 }

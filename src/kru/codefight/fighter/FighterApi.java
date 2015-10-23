@@ -11,16 +11,40 @@ public class FighterApi {
   }
 
   public void attack(AbstractAttack attack) {
-    fighter.attack(attack);
+    if (!resolveAccumulatedStun()) {
+      fighter.attack(attack);
+    }
   }
 
   public void changeStance(Stance stance) {
-    fighter.setStance(stance);
+    if (!resolveAccumulatedStun()) {
+      fighter.setStance(stance);
+    }
   }
 
   public boolean tryScanOpponent(FighterStatus opponentStatus) {
-    if (fighter.canSeeOpponent()) {
-      opponentStatus.setFighter(fighter.getOpponent());
+    if (!resolveAccumulatedStun()) {
+      if (fighter.canSeeOpponent()) {
+        opponentStatus.setFighter(fighter.getOpponent());
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  private boolean resolveAccumulatedStun() {
+    if (fighter.getStunDuration() > 0) {
+      try {
+        Thread.sleep(fighter.getStunDuration());
+      } catch (InterruptedException e) {
+        //someone woke up the thread! @TODO possible bug!
+        System.out.println("This should never happen!");
+      } finally {
+        fighter.resetStun();
+      }
       return true;
     } else {
       return false;

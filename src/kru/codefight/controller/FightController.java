@@ -6,12 +6,15 @@ import kru.codefight.FightOutcome;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
-import kru.codefight.thread.FightRunner;
+import kru.codefight.thread.FighterThread;
 
 public class FightController implements FightListener {
 
   private Fighter redFighter;
   private Fighter blueFighter;
+
+  private FighterThread redFighterThread;
+  private FighterThread blueFighterThread;
 
   private FightResolver fightResolver = new FightResolver();
 
@@ -23,8 +26,8 @@ public class FightController implements FightListener {
     redFighter.subscribeToAttackHappened(this);
     blueFighter.subscribeToAttackHappened(this);
 
-    Thread redFighterThread = new Thread(new FightRunner(redFighter, blueFighter));
-    Thread blueFighterThread = new Thread(new FightRunner(blueFighter, redFighter));
+    this.redFighterThread = new FighterThread(redFighter, blueFighter);
+    this.blueFighterThread = new FighterThread(blueFighter, redFighter);
 
     redFighterThread.start();
     blueFighterThread.start();
@@ -41,28 +44,39 @@ public class FightController implements FightListener {
 
   @Override
   public void attackHappened(Fighter attacker, AbstractAttack attack) {
-    Fighter defender = getVictim(attacker);
-    fightResolver.resolveAttack(attacker, defender, attack);
+    FighterThread attackerThread = getFighterThread(attacker);
+    FighterThread defenderThread = getOpponentThread(attacker);
+    fightResolver.resolveAttack(attackerThread, defenderThread, attack);
     System.out.println("Red hp:" + redFighter.getHitPoints());
     System.out.println("Blue hp:" + blueFighter.getHitPoints());
-    if (defender.getHitPoints() <= 0) {
+    if (defenderThread.getFighter().isKnockedOut()) {
       endFight();
+    }
+  }
+
+  private FighterThread getFighterThread(Fighter attacker) {
+    if (attacker == redFighter) {
+      return redFighterThread;
+    } else if (attacker == blueFighter) {
+      return blueFighterThread;
+    } else {
+      throw new InvalidStateException("Some funny stuff right here...");
+    }
+  }
+
+  private FighterThread getOpponentThread(Fighter attacker) {
+    if (attacker == redFighter) {
+      return blueFighterThread;
+    } else if (attacker == blueFighter) {
+      return redFighterThread;
+    } else {
+      throw new InvalidStateException("Some funny stuff right here...");
     }
   }
 
   private void endFight() {
     redFighter.stopFighting();
     blueFighter.stopFighting();
-  }
-
-  private Fighter getVictim(Fighter attacker) {
-    if (attacker == redFighter) {
-      return blueFighter;
-    } else if (attacker == blueFighter) {
-      return redFighter;
-    } else {
-      throw new InvalidStateException("Some funny stuff right here...");
-    }
   }
 
 }

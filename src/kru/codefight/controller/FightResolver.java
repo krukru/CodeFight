@@ -3,6 +3,7 @@ package kru.codefight.controller;
 import kru.codefight.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
+import kru.codefight.thread.FighterThread;
 
 public class FightResolver {
 
@@ -10,12 +11,23 @@ public class FightResolver {
   private static final int DAMAGE_MULTIPLIER = 2;
   private static final int STUN_MULTIPLIER = 2;
 
-  public void resolveAttack(Fighter attacker, Fighter defender, AbstractAttack attack) {
+  public void resolveAttack(FighterThread attackerThread, FighterThread defenderThread,
+                            AbstractAttack attack) {
+    Fighter attacker = attackerThread.getFighter();
+    Fighter defender = defenderThread.getFighter();
+
     int damage = getDamage(attacker, defender, attack);
+    if (damage > 0) {
+      defender.takeDamage(damage);
+    }
+
     int stunDuration = getStunDuration(attacker, defender, attack);
-    defender.takeDamage(damage);
     if (stunDuration > 0) {
+      //@TODO: refactor
       defender.addStunDuration(stunDuration);
+      if (defender.isAttacking()) {
+        defenderThread.interrupt();
+      }
     }
   }
 
@@ -62,11 +74,11 @@ public class FightResolver {
   }
 
   public FightOutcome determineOutcome(Fighter redFighter, Fighter blueFighter) {
-    if (redFighter.getHitPoints() <= 0 && blueFighter.getHitPoints() <= 0) {
+    if (redFighter.isKnockedOut() && blueFighter.isKnockedOut()) {
       return FightOutcome.MUTUAL_KO;
-    } else if (redFighter.getHitPoints() > 0 && blueFighter.getHitPoints() <= 0) {
+    } else if (redFighter.isKnockedOut() == false && blueFighter.isKnockedOut()) {
       return FightOutcome.RED_WON;
-    } else if (redFighter.getHitPoints() <= 0 && blueFighter.getHitPoints() > 0) {
+    } else if (redFighter.isKnockedOut() && blueFighter.isKnockedOut() == false) {
       return FightOutcome.BLUE_WON;
     } else {
       return FightOutcome.NO_WINNER;
