@@ -6,7 +6,7 @@ public class Logger {
 
   public static AbstractFightLogger instance() {
     if (instance == null) {
-      instance = LoggerFactory.createVisualizer();
+      instance = LoggerFactory.createLogger();
     }
     return instance;
   }
