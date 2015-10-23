@@ -1,7 +1,7 @@
 package kru.codefight.visualization;
 
 public class VisualizerFactory {
-  public static AbstractFighterVisualizer createVisualizer() {
+  public static AbstractFightVisualizer createVisualizer() {
     //currently the best one
     return new ConsoleVisualizer();
   }

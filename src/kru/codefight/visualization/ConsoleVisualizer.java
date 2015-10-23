@@ -4,7 +4,7 @@ import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 
-public class ConsoleVisualizer extends AbstractFighterVisualizer {
+public class ConsoleVisualizer extends AbstractFightVisualizer {
 
   @Override
   public void attack(Fighter attacker, Fighter defender, AbstractAttack attack) {

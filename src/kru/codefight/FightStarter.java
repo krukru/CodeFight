@@ -5,12 +5,8 @@ import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.FighterColor;
 import kru.codefight.strategy.AbstractFighterStrategy;
-import kru.codefight.strategy.MeSmashStrategy;
 import kru.codefight.strategy.NewbieStrategy;
 import kru.codefight.strategy.OneTwoStrategy;
-import kru.codefight.strategy.OstrichStrategy;
-import kru.codefight.visualization.AbstractFighterVisualizer;
-import kru.codefight.visualization.ConsoleVisualizer;
 
 public class FightStarter {
 

@@ -2,9 +2,9 @@ package kru.codefight.visualization;
 
 public class Visualizer {
 
-  private static AbstractFighterVisualizer instance;
+  private static AbstractFightVisualizer instance;
 
-  public static AbstractFighterVisualizer instance() {
+  public static AbstractFightVisualizer instance() {
     if (instance == null) {
       instance = VisualizerFactory.createVisualizer();
     }
