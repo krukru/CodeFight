@@ -4,7 +4,7 @@ import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 
-public class ExpressiveLogger extends AbstractFightLogger {
+public class DetailedLogger extends AbstractFightLogger {
 
   @Override
   public void attack(Fighter attacker, Fighter defender, AbstractAttack attack) {

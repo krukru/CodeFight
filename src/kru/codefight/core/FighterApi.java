@@ -44,7 +44,7 @@ public class FighterApi {
         Thread.sleep(fighter.getStunDuration());
       } catch (InterruptedException e) {
         //someone woke up the thread! @TODO possible bug!
-        System.out.println("This should never happen!");
+        System.out.println("This should never happen!" + fighter.getColor().toString());
       } finally {
         fighter.resetStun();
       }

@@ -19,6 +19,7 @@ public class SimpleLogger extends AbstractFightLogger {
 
   @Override
   public void attackInterrupted(Fighter attacker, AbstractAttack attack) {
-
+    System.out.println(String.format("%1$s fighter was interrupted while casting %2$s",
+        attacker.getColor(), attack.getClass().getSimpleName()));
   }
 }
