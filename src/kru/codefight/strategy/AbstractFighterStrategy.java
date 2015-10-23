@@ -2,8 +2,8 @@ package kru.codefight.strategy;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
-import kru.codefight.events.FighterApi;
 import kru.codefight.fighter.Fighter;
+import kru.codefight.fighter.FighterApi;
 
 public abstract class AbstractFighterStrategy {
 

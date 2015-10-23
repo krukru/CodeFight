@@ -20,4 +20,9 @@ public class Jab extends AbstractAttack {
   public int getCastTimeInMs() {
     return 500;
   }
+
+  @Override
+  public int getStunDurationInMs() {
+    return 0;
+  }
 }

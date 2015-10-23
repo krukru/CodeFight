@@ -4,7 +4,6 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
-import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.thread.FightRunner;
 
@@ -12,9 +11,6 @@ public class FightController implements FightListener {
 
   private Fighter redFighter;
   private Fighter blueFighter;
-
-  private Thread redFighterThread;
-  private Thread blueFighterThread;
 
   private FightResolver fightResolver = new FightResolver();
 
@@ -26,8 +22,8 @@ public class FightController implements FightListener {
     redFighter.subscribeToAttackHappened(this);
     blueFighter.subscribeToAttackHappened(this);
 
-    this.redFighterThread = new Thread(new FightRunner(redFighter, blueFighter));
-    this.blueFighterThread = new Thread(new FightRunner(blueFighter, redFighter));
+    Thread redFighterThread = new Thread(new FightRunner(redFighter, blueFighter));
+    Thread blueFighterThread = new Thread(new FightRunner(blueFighter, redFighter));
 
     redFighterThread.start();
     blueFighterThread.start();
@@ -41,12 +37,12 @@ public class FightController implements FightListener {
   }
 
   @Override
-  public void attackHappened(Fighter initiator, AbstractAttack attack) {
-    Fighter victim = getVictim(initiator);
-    fightResolver.resolveAttack(initiator, victim, attack);
+  public void attackHappened(Fighter attacker, AbstractAttack attack) {
+    Fighter defender = getVictim(attacker);
+    fightResolver.resolveAttack(attacker, defender, attack);
     System.out.println("Red hp:" + redFighter.getHitPoints());
     System.out.println("Blue hp:" + blueFighter.getHitPoints());
-    if (victim.getHitPoints() <= 0) {
+    if (defender.getHitPoints() <= 0) {
       endFight();
     }
   }
@@ -58,13 +54,14 @@ public class FightController implements FightListener {
     blueFighter.unsubscribeFromAttackHappened();
   }
 
-  private Fighter getVictim(Fighter initiator) {
-    if (initiator == redFighter) {
+  private Fighter getVictim(Fighter attacker) {
+    if (attacker == redFighter) {
       return blueFighter;
-    } else if (initiator == blueFighter) {
+    } else if (attacker == blueFighter) {
       return redFighter;
     } else {
-      throw new InvalidStateException("What da. Who's been calling my listener?");
+      throw new InvalidStateException("Some funny stuff right here...");
     }
   }
+
 }

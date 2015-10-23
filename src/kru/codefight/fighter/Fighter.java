@@ -1,7 +1,6 @@
 package kru.codefight.fighter;
 
 import kru.codefight.events.FightListener;
-import kru.codefight.events.FighterApi;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
@@ -17,6 +16,9 @@ public class Fighter {
   private Stance stance;
   private Fighter opponent;
   private FighterApi api;
+  private int stunDurationInMs;
+
+  private boolean isAttacking = false;
 
   private volatile boolean fightActive;
 
@@ -25,6 +27,8 @@ public class Fighter {
   public FighterApi Api() {
     return api;
   }
+
+  public boolean isAttacking() {return isAttacking;}
 
   public int getHitPoints() {
     return hitPoints;
@@ -94,6 +98,7 @@ public class Fighter {
   }
 
   public void attack(AbstractAttack attack) {
+    this.isAttacking = true;
     if (listener == null) {
       throw new NullPointerException("Attack happened, but no listener was set!");
     }
@@ -104,5 +109,10 @@ public class Fighter {
       //Attack was interrupted
     }
     listener.attackHappened(this, attack);
+    this.isAttacking = false;
+  }
+
+  public void stunned(int stunDurationInMs) {
+    this.stunDurationInMs = stunDurationInMs;
   }
 }

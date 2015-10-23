@@ -20,4 +20,9 @@ public class Haymaker extends AbstractAttack {
   public int getCastTimeInMs() {
     return 2500;
   }
+
+  @Override
+  public int getStunDurationInMs() {
+    return 2000;
+  }
 }

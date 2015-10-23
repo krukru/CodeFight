@@ -20,4 +20,9 @@ public class Cross extends AbstractAttack {
   public int getCastTimeInMs() {
     return 1000;
   }
+
+  @Override
+  public int getStunDurationInMs() {
+    return 200;
+  }
 }

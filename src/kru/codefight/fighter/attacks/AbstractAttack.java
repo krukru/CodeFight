@@ -8,4 +8,5 @@ public abstract class AbstractAttack {
   public abstract int getBlockedDamage();
   public abstract int getStaminaCost();
   public abstract int getCastTimeInMs();
+  public abstract int getStunDurationInMs();
 }
