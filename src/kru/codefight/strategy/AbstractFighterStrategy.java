@@ -2,7 +2,7 @@ package kru.codefight.strategy;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
-import kru.codefight.FighterApi;
+import kru.codefight.events.FighterApi;
 import kru.codefight.fighter.Fighter;
 
 public abstract class AbstractFighterStrategy {
@@ -26,5 +26,5 @@ public abstract class AbstractFighterStrategy {
   /**
    * This gets executed in a loop
    */
-  public abstract void Act();
+  public abstract void act();
 }

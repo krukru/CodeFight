@@ -1,4 +1,4 @@
-package kru.codefight;
+package kru.codefight.controller;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
@@ -28,13 +28,28 @@ public class FightController implements FightListener {
 
     redFighterThread.start();
     blueFighterThread.start();
+
+    try {
+      redFighterThread.join();
+      blueFighterThread.join();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
-  public void AttackHappened(Fighter initiator, AbstractAttack attack) {
+  public void attackHappened(Fighter initiator, AbstractAttack attack) {
     Fighter victim = getVictim(initiator);
     int damage = attack.getFullDamage();
     victim.takeDamage(damage);
+    System.out.println("Red hp:" + redFighter.getHitPoints());
+    System.out.println("Blue hp:" + blueFighter.getHitPoints());
+    if (victim.getHitPoints() <= 0) {
+      redFighter.stopFighting();
+      blueFighter.stopFighting();
+      redFighter.Api().unsubscribeFromAttackHappened();
+      blueFighter.Api().unsubscribeFromAttackHappened();
+    }
   }
 
   private Fighter getVictim(Fighter initiator) {

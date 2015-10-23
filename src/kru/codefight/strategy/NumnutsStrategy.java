@@ -2,7 +2,7 @@ package kru.codefight.strategy;
 
 public class NumnutsStrategy extends AbstractFighterStrategy {
   @Override
-  public void Act() {
+  public void act() {
     //derp
   }
 }

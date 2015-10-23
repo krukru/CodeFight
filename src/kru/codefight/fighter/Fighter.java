@@ -1,6 +1,6 @@
 package kru.codefight.fighter;
 
-import kru.codefight.FighterApi;
+import kru.codefight.events.FighterApi;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
 
@@ -13,11 +13,16 @@ public class Fighter {
   private int hitPoints;
   private int stamina;
   private Stance stance;
-
   private FighterApi api;
+
+  private volatile boolean fightActive;
 
   public FighterApi Api() {
     return api;
+  }
+
+  public int getHitPoints() {
+    return hitPoints;
   }
 
   public Fighter(AbstractFighterStrategy strategy) {
@@ -38,11 +43,18 @@ public class Fighter {
   }
 
   public void startFighting() {
+    fightActive = true;
+    while (fightActive) {
+      strategy.act();
+    }
+  }
 
-
+  public void stopFighting() {
+    fightActive = false;
   }
 
   public void takeDamage(int damage) {
     this.hitPoints -= damage;
   }
+
 }
