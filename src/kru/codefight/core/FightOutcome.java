@@ -1,4 +1,4 @@
-package kru.codefight;
+package kru.codefight.core;
 
 public enum FightOutcome {
   RED_WON,

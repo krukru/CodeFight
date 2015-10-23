@@ -1,6 +1,7 @@
 package kru.codefight;
 
 import kru.codefight.controller.FightController;
+import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.MeSmashStrategy;

@@ -1,5 +1,8 @@
-package kru.codefight.fighter;
+package kru.codefight.core;
 
+import kru.codefight.fighter.Fighter;
+import kru.codefight.fighter.FighterStatus;
+import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 
 public class FighterApi {

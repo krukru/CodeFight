@@ -2,7 +2,7 @@ package kru.codefight.controller;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
-import kru.codefight.FightOutcome;
+import kru.codefight.core.FightOutcome;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;

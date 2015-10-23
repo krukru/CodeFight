@@ -1,5 +1,6 @@
 package kru.codefight.fighter;
 
+import kru.codefight.core.FighterApi;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.strategy.AbstractFighterStrategy;

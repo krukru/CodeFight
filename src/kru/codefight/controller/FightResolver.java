@@ -1,6 +1,6 @@
 package kru.codefight.controller;
 
-import kru.codefight.FightOutcome;
+import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.thread.FighterThread;
