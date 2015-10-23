@@ -5,6 +5,7 @@ import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
+import kru.codefight.logger.Logger;
 
 public class Fighter {
   private static final int STARTING_HIT_POINTS = 100;
@@ -92,8 +93,9 @@ public class Fighter {
     try {
       Thread.sleep(castTime);
       listener.attackHappened(this, attack);
+      Logger.instance().attack(this, opponent, attack);
     } catch (InterruptedException e) {
-      //Attack was interrupted
+      Logger.instance().attackInterrupted(this, attack);
     } finally {
       this.isAttacking = false;
       this.stance = Stance.NORMAL;
