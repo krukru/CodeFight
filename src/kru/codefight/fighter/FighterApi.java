@@ -46,7 +46,7 @@ public class FighterApi {
       } catch (InterruptedException e) {
         //someone woke up the thread! @TODO possible bug!
       } finally {
-        fighter.setStunDuration(0);
+        fighter.resetStun();
       }
       return true;
     } else {

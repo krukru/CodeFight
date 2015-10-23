@@ -15,7 +15,7 @@ public class FightResolver {
     int stunDuration = getStunDuration(attacker, defender, attack);
     defender.takeDamage(damage);
     if (stunDuration > 0) {
-      defender.setStunDuration(stunDuration);
+      defender.addStunDuration(stunDuration);
     }
   }
 

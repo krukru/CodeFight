@@ -34,6 +34,10 @@ public class Fighter {
     return stunDuration;
   }
 
+  public void resetStun() {
+    this.stunDuration = 0;
+  }
+
   public void addStunDuration(long stunDuration) {
     if (stunDuration < 0) {
       throw new IllegalArgumentException();
