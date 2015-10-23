@@ -27,6 +27,11 @@ public class FighterApi {
 
   public void recoverStamina() {
     fighter.recoverStamina();
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException e) {
+      System.out.println("Got woken up while recovering!" + fighter.getColor().toString());
+    }
   }
 
   public void recoverStaminaUpTo(int targetStamina) {

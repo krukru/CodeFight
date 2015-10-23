@@ -112,7 +112,7 @@ public class Fighter {
     } catch (InterruptedException e) {
       Logger.instance().attackInterrupted(this, attack);
     } finally {
-      this.stamina = Math.max(0, stamina - 10);
+      this.stamina = Math.max(0, stamina - attack.getStaminaCost());
       this.stance = Stance.NORMAL;
       this.isAttacking = false;
     }

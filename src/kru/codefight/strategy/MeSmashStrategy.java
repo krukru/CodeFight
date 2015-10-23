@@ -6,5 +6,6 @@ public class MeSmashStrategy extends AbstractFighterStrategy {
   @Override
   public void act() {
     Do().attack(Attacks.Haymaker);
+    Do().recoverStaminaUpTo(90);
   }
 }
