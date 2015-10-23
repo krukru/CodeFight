@@ -19,7 +19,7 @@ public abstract class AbstractFighterStrategy {
     this.fighter = fighter;
   }
 
-  public FighterApi Do() {
+  protected final FighterApi Do() {
     return fighter.Api();
   }
 
@@ -27,4 +27,10 @@ public abstract class AbstractFighterStrategy {
    * This gets executed in a loop
    */
   public abstract void act();
+
+  public List<ConditionalStrategy> registerConditionalStrategies() {
+    //here you can give a set of conditions that will trigger
+    //this way, your act() is just the default act()
+    //based on what condition triggers, that act it trigger
+  }
 }
