@@ -4,6 +4,7 @@ import kru.codefight.fighter.attacks.AbstractAttack;
 
 public class FighterApi {
 
+  //@TODO: Think about moving the resolveStun to the Fighter class
   private Fighter fighter;
 
   public FighterApi(Fighter fighter) {
@@ -11,26 +12,34 @@ public class FighterApi {
   }
 
   public void attack(AbstractAttack attack) {
-    resolveStun();
-    fighter.attack(attack);
+    boolean interrupted = resolveStun();
+    if (!interrupted) {
+      fighter.attack(attack);
+    }
   }
 
   public void changeStance(Stance stance) {
-    resolveStun();
-    fighter.setStance(stance);
+    boolean interrupted = resolveStun();
+    if (!interrupted) {
+      fighter.setStance(stance);
+    }
   }
 
   public boolean tryScanOpponent(FighterStatus opponentStatus) {
-    resolveStun();
-    if (fighter.canSeeOpponent()) {
-      opponentStatus.setFighter(fighter.getOpponent());
-      return true;
+    boolean interrupted = resolveStun();
+    if (!interrupted) {
+      if (fighter.canSeeOpponent()) {
+        opponentStatus.setFighter(fighter.getOpponent());
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
   }
 
-  private void resolveStun() {
+  private boolean resolveStun() {
     if (fighter.getStunDuration() > 0) {
       try {
         Thread.sleep(fighter.getStunDuration());
@@ -39,6 +48,9 @@ public class FighterApi {
       } finally {
         fighter.setStunDuration(0);
       }
+      return true;
+    } else {
+      return false;
     }
   }
 }

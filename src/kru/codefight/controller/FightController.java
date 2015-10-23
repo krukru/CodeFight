@@ -2,6 +2,7 @@ package kru.codefight.controller;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
+import kru.codefight.FightOutcome;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
@@ -14,7 +15,7 @@ public class FightController implements FightListener {
 
   private FightResolver fightResolver = new FightResolver();
 
-  public void startFight(Fighter redFighter, Fighter blueFighter) {
+  public FightOutcome resolveFight(Fighter redFighter, Fighter blueFighter) {
 
     this.redFighter = redFighter;
     this.blueFighter = blueFighter;
@@ -34,6 +35,9 @@ public class FightController implements FightListener {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
+    FightOutcome result = fightResolver.determineOutcome(redFighter, blueFighter);
+    return result;
   }
 
   @Override
@@ -50,8 +54,6 @@ public class FightController implements FightListener {
   private void endFight() {
     redFighter.stopFighting();
     blueFighter.stopFighting();
-    redFighter.unsubscribeFromAttackHappened();
-    blueFighter.unsubscribeFromAttackHappened();
   }
 
   private Fighter getVictim(Fighter attacker) {

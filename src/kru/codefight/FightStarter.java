@@ -3,13 +3,13 @@ package kru.codefight;
 import kru.codefight.controller.FightController;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.strategy.AbstractFighterStrategy;
+import kru.codefight.strategy.MeSmashStrategy;
 import kru.codefight.strategy.NewbieStrategy;
-import kru.codefight.strategy.NumnutsStrategy;
 
 public class FightStarter {
 
   private static final AbstractFighterStrategy redStrategy = new NewbieStrategy();
-  private static final AbstractFighterStrategy blueStrategy = new NumnutsStrategy();
+  private static final AbstractFighterStrategy blueStrategy = new MeSmashStrategy();
 
   public static void main(String[] args) {
     Fighter redFighter = new Fighter(redStrategy);
@@ -17,7 +17,8 @@ public class FightStarter {
 
     FightController fightClub = new FightController();
     System.out.println("Fight started!");
-    fightClub.startFight(redFighter, blueFighter);
+    FightOutcome result = fightClub.resolveFight(redFighter, blueFighter);
     System.out.println("Fight ended!");
+    System.out.println(result.toString());
   }
 }

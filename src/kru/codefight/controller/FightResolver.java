@@ -1,5 +1,6 @@
 package kru.codefight.controller;
 
+import kru.codefight.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
 
@@ -58,5 +59,17 @@ public class FightResolver {
         throw new IllegalStateException();
     }
     return result;
+  }
+
+  public FightOutcome determineOutcome(Fighter redFighter, Fighter blueFighter) {
+    if (redFighter.getHitPoints() <= 0 && blueFighter.getHitPoints() <= 0) {
+      return FightOutcome.MUTUAL_KO;
+    } else if (redFighter.getHitPoints() > 0 && blueFighter.getHitPoints() <= 0) {
+      return FightOutcome.RED_WON;
+    } else if (redFighter.getHitPoints() <= 0 && blueFighter.getHitPoints() > 0) {
+      return FightOutcome.BLUE_WON;
+    } else {
+      return FightOutcome.NO_WINNER;
+    }
   }
 }

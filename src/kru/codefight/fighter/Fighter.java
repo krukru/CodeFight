@@ -34,8 +34,11 @@ public class Fighter {
     return stunDuration;
   }
 
-  public void setStunDuration(long stunDuration) {
-    this.stunDuration = stunDuration;
+  public void addStunDuration(long stunDuration) {
+    if (stunDuration < 0) {
+      throw new IllegalArgumentException();
+    }
+    this.stunDuration += stunDuration;
   }
 
   public int getHitPoints() {
