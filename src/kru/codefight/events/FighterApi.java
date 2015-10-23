@@ -14,7 +14,7 @@ public class FighterApi {
   }
 
   public void attack(AbstractAttack attack) {
-    fighter.attackHappened(fighter, attack);
+    fighter.attack(attack);
   }
 
   public void changeStance(Stance stance) {

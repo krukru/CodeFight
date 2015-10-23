@@ -93,7 +93,7 @@ public class Fighter {
     this.listener = null;
   }
 
-  public void attackHappened(Fighter fighter, AbstractAttack attack) {
+  public void attack(AbstractAttack attack) {
     if (listener == null) {
       throw new NullPointerException("Attack happened, but no listener was set!");
     }
@@ -103,5 +103,6 @@ public class Fighter {
     } catch (InterruptedException e) {
       //Attack was interrupted
     }
+    listener.attackHappened(this, attack);
   }
 }

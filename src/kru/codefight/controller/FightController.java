@@ -16,6 +16,8 @@ public class FightController implements FightListener {
   private Thread redFighterThread;
   private Thread blueFighterThread;
 
+  private FightResolver fightResolver = new FightResolver();
+
   public void startFight(Fighter redFighter, Fighter blueFighter) {
 
     this.redFighter = redFighter;
@@ -41,26 +43,7 @@ public class FightController implements FightListener {
   @Override
   public void attackHappened(Fighter initiator, AbstractAttack attack) {
     Fighter victim = getVictim(initiator);
-    resolveAttack(initiator, victim, attack);
-  }
-
-  private void resolveAttack(Fighter initiator, Fighter victim, AbstractAttack attack) {
-    int damage;
-    Stance victimStance = victim.getStance();
-    switch (victimStance) {
-      case NORMAL:
-        damage = attack.getFullDamage();
-        break;
-      case BLOCKING:
-        damage = attack.getBlockedDamage();
-        break;
-      case DODGING:
-        damage = 0;
-        break;
-      default:
-        throw new EnumConstantNotPresentException(victimStance.getClass(), victimStance.toString());
-    }
-    victim.takeDamage(damage);
+    fightResolver.resolveAttack(initiator, victim, attack);
     System.out.println("Red hp:" + redFighter.getHitPoints());
     System.out.println("Blue hp:" + blueFighter.getHitPoints());
     if (victim.getHitPoints() <= 0) {
