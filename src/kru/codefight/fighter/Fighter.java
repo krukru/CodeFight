@@ -3,9 +3,9 @@ package kru.codefight.fighter;
 import kru.codefight.core.FighterApi;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
+import kru.codefight.logger.Logger;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
-import kru.codefight.logger.Logger;
 
 public class Fighter {
   private static final int STARTING_HIT_POINTS = 100;
@@ -20,7 +20,7 @@ public class Fighter {
 
   private FighterColor fighterColor;
 
-  private volatile long stunDuration; //in milis
+  private volatile long stunDuration; //in milis //possibly only volatile
   private volatile boolean fightActive;
   private volatile int hitPoints;
   private volatile boolean isAttacking = false;
@@ -31,7 +31,9 @@ public class Fighter {
     return api;
   }
 
-  public boolean isAttacking() {return isAttacking;}
+  public boolean isAttacking() {
+    return isAttacking;
+  }
 
   public long getStunDuration() {
     return stunDuration;
@@ -62,6 +64,7 @@ public class Fighter {
 
   public void setStance(Stance stance) {
     this.stance = stance;
+    Logger.instance().stanceChange(this, stance);
   }
 
   public Fighter getOpponent() {
@@ -97,8 +100,8 @@ public class Fighter {
     } catch (InterruptedException e) {
       Logger.instance().attackInterrupted(this, attack);
     } finally {
-      this.isAttacking = false;
       this.stance = Stance.NORMAL;
+      this.isAttacking = false;
     }
   }
 
