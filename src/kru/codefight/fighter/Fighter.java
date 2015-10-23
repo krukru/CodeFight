@@ -85,13 +85,13 @@ public class Fighter {
     int castTime = attack.getCastTimeInMs();
     try {
       Thread.sleep(castTime);
+      listener.attackHappened(this, attack);
     } catch (InterruptedException e) {
       //Attack was interrupted
+    } finally {
       this.isAttacking = false;
-      return;
+      this.stance = Stance.NORMAL;
     }
-    listener.attackHappened(this, attack);
-    this.isAttacking = false;
   }
 
   private void initFighterStats(int startingHitPoints, int startingStamina) {
