@@ -47,8 +47,6 @@ public class FightController implements FightListener {
     FighterThread attackerThread = getFighterThread(attacker);
     FighterThread defenderThread = getOpponentThread(attacker);
     fightResolver.resolveAttack(attackerThread, defenderThread, attack);
-    System.out.println("Red hp:" + redFighter.getHitPoints());
-    System.out.println("Blue hp:" + blueFighter.getHitPoints());
     if (defenderThread.getFighter().isKnockedOut()) {
       endFight();
     }

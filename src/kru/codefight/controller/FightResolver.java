@@ -4,6 +4,7 @@ import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.thread.FighterThread;
+import kru.codefight.visualization.Visualizer;
 
 public class FightResolver {
 
@@ -29,6 +30,8 @@ public class FightResolver {
         defenderThread.interrupt();
       }
     }
+
+    Visualizer.instance().attack(attacker, defender, attack);
   }
 
   private int getDamage(Fighter attacker, Fighter defender, AbstractAttack attack) {

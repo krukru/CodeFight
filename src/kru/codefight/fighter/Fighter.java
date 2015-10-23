@@ -7,7 +7,6 @@ import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.NumnutsStrategy;
 
 public class Fighter {
-
   private static final int STARTING_HIT_POINTS = 100;
   private static final int STARTING_STAMINA = 100;
 
@@ -17,6 +16,8 @@ public class Fighter {
   private Stance stance;
   private Fighter opponent;
   private FighterApi api;
+
+  private FighterColor fighterColor;
 
   private volatile long stunDuration; //in milis
   private volatile boolean fightActive;
@@ -46,6 +47,10 @@ public class Fighter {
     this.stunDuration += stunDuration;
   }
 
+  public FighterColor getColor() {
+    return fighterColor;
+  }
+
   public int getHitPoints() {
     return hitPoints;
   }
@@ -66,7 +71,7 @@ public class Fighter {
     return hitPoints <= 0;
   }
 
-  public Fighter(AbstractFighterStrategy strategy) {
+  public Fighter(AbstractFighterStrategy strategy, FighterColor fighterColor) {
     this.api = new FighterApi(this);
     initFighterStats(STARTING_HIT_POINTS, STARTING_STAMINA);
     if (strategy == null) {
@@ -75,6 +80,7 @@ public class Fighter {
       this.strategy = strategy;
     }
     this.strategy.setFighter(this);
+    this.fighterColor = fighterColor;
   }
 
   public void attack(AbstractAttack attack) {
