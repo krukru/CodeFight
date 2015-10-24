@@ -25,4 +25,9 @@ public class Cross extends AbstractAttack {
   public int getStunDurationInMs() {
     return 200;
   }
+
+  @Override
+  public boolean isDodgeable() {
+    return true;
+  }
 }

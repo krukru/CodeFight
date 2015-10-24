@@ -1,24 +1,24 @@
 package kru.codefight.fighter.attacks;
 
-public class Jab extends AbstractAttack {
+public class LiverShot extends AbstractAttack {
   @Override
   public int getFullDamage() {
-    return 5;
-  }
-
-  @Override
-  public int getBlockedDamage() {
-    return 0;
-  }
-
-  @Override
-  public int getStaminaCost() {
     return 15;
   }
 
   @Override
+  public int getBlockedDamage() {
+    return 10;
+  }
+
+  @Override
+  public int getStaminaCost() {
+    return 30;
+  }
+
+  @Override
   public int getCastTimeInMs() {
-    return 600;
+    return 700;
   }
 
   @Override
@@ -28,6 +28,6 @@ public class Jab extends AbstractAttack {
 
   @Override
   public boolean isDodgeable() {
-    return true;
+    return false;
   }
 }

@@ -25,4 +25,9 @@ public class Haymaker extends AbstractAttack {
   public int getStunDurationInMs() {
     return 2000;
   }
+
+  @Override
+  public boolean isDodgeable() {
+    return true;
+  }
 }
