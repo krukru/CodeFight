@@ -8,7 +8,6 @@ import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
 
-//@TODO: počisti ovaj sataraš od rasporeda gettera/settera/varijabli
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
   private static final int MAX_STAMINA = 100;
@@ -83,7 +82,7 @@ public class Fighter {
   }
 
   public double getAttackIntensityFactor() {
-    return Math.max(0.1, (double) stamina / MAX_STAMINA); //@TODO: neki eksponencijalni pad moĹľda?
+    return Math.max(0.1, (double) stamina / MAX_STAMINA);
   }
 
   public void recoverStamina() {

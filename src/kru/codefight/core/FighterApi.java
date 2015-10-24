@@ -35,7 +35,6 @@ public class FighterApi {
   }
 
   public void recoverStaminaUpTo(int targetStamina) {
-    //@TODO: dont recover if you're already satisfied the level
     if (targetStamina < 0 || targetStamina > 100) {
       throw new IllegalArgumentException();
     }
@@ -62,7 +61,6 @@ public class FighterApi {
       try {
         Thread.sleep(fighter.getStunDuration());
       } catch (InterruptedException e) {
-        //someone woke up the thread! @TODO possible bug!
         System.out.println("This should never happen!" + fighter.getColor().toString());
       } finally {
         fighter.resetStun();
