@@ -1,4 +1,4 @@
-package kru.codefight.logger;
+package kru.codefight.visualizer;
 
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.FighterColor;

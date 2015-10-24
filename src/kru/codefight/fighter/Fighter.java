@@ -3,11 +3,11 @@ package kru.codefight.fighter;
 import kru.codefight.core.FighterApi;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
-import kru.codefight.logger.AbstractFightVisualizer;
-import kru.codefight.logger.Visualizer;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
+import kru.codefight.visualizer.AbstractFightVisualizer;
+import kru.codefight.visualizer.Visualizer;
 
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;

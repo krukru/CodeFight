@@ -1,4 +1,4 @@
-package kru.codefight.logger;
+package kru.codefight.visualizer;
 
 public class Visualizer {
 
