@@ -3,7 +3,9 @@ package kru.codefight.fighter;
 import kru.codefight.core.FighterApi;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
-import kru.codefight.logger.Logger;
+import kru.codefight.logger.AbstractFightVisualizer;
+import kru.codefight.logger.Visualizer;
+import kru.codefight.logger.VisualizerFactory;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
@@ -28,6 +30,7 @@ public class Fighter {
   private boolean fightActive;
 
   private FightListener listener;
+  private AbstractFightVisualizer visualizer = Visualizer.instance();
 
   public Fighter(AbstractFighterStrategy strategy, FighterColor fighterColor) {
     this.api = new FighterApi(this);
@@ -64,6 +67,13 @@ public class Fighter {
     this.stunDuration += stunDuration;
   }
 
+  public void decreaseStunDuration(long stunDuration) {
+    if (stunDuration < 0) {
+      throw new IllegalArgumentException();
+    }
+    this.stunDuration -= stunDuration;
+  }
+
   public FighterColor getColor() {
     return fighterColor;
   }
@@ -78,7 +88,7 @@ public class Fighter {
 
   public void setStance(Stance stance) {
     this.stance = stance;
-    Logger.instance().stanceChange(this, stance);
+    visualizer.stanceChanged(this, stance);
   }
 
   public double getAttackIntensityFactor() {
@@ -86,9 +96,8 @@ public class Fighter {
   }
 
   public void recoverStamina() {
-    this.stance = Stance.NORMAL;
+    visualizer.staminaRecovered(this, stamina);
     this.stamina = Math.min(MAX_STAMINA, stamina + 25);
-    Logger.instance().recoverStamina(this, 25);
   }
 
   public Fighter getOpponent() {
@@ -117,7 +126,7 @@ public class Fighter {
       Thread.sleep(castTime);
       listener.attackHappened(this, attack);
     } catch (InterruptedException e) {
-      Logger.instance().attackInterrupted(this, attack);
+      visualizer.attackInterrupted(this, attack);
     } finally {
       this.stamina = Math.max(0, stamina - attack.getStaminaCost());
       this.stance = Stance.NORMAL;

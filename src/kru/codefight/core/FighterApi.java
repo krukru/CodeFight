@@ -4,31 +4,34 @@ import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.FighterStatus;
 import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
+import kru.codefight.logger.AbstractFightVisualizer;
+import kru.codefight.logger.Visualizer;
+import kru.codefight.logger.VisualizerFactory;
 
 public class FighterApi {
 
   private Fighter fighter;
+  private AbstractFightVisualizer visualizer =  Visualizer.instance();
 
   public FighterApi(Fighter fighter) {
     this.fighter = fighter;
   }
 
   public void attack(AbstractAttack attack) {
-    if (!resolveAccumulatedStun()) {
-      fighter.attack(attack);
-    }
+    resolveAccumulatedStun();
+    fighter.attack(attack);
   }
 
   public void changeStance(Stance stance) {
-    if (!resolveAccumulatedStun()) {
-      fighter.setStance(stance);
-    }
+    resolveAccumulatedStun();
+    fighter.setStance(stance);
   }
 
   public void recoverStamina() {
     fighter.recoverStamina();
     try {
       Thread.sleep(500);
+      fighter.decreaseStunDuration(500);
     } catch (InterruptedException e) {
       System.out.println("Got woken up while recovering!" + fighter.getColor().toString());
     }
@@ -44,19 +47,16 @@ public class FighterApi {
   }
 
   public boolean tryScanOpponent(FighterStatus opponentStatus) {
-    if (!resolveAccumulatedStun()) {
-      if (fighter.canSeeOpponent()) {
-        opponentStatus.loadStatus(fighter.getOpponent());
-        return true;
-      } else {
-        return false;
-      }
+    resolveAccumulatedStun();
+    if (fighter.canSeeOpponent()) {
+      opponentStatus.loadStatus(fighter.getOpponent());
+      return true;
     } else {
       return false;
     }
   }
 
-  private boolean resolveAccumulatedStun() {
+  private void resolveAccumulatedStun() {
     if (fighter.getStunDuration() > 0) {
       try {
         Thread.sleep(fighter.getStunDuration());
@@ -65,9 +65,6 @@ public class FighterApi {
       } finally {
         fighter.resetStun();
       }
-      return true;
-    } else {
-      return false;
     }
   }
 }
