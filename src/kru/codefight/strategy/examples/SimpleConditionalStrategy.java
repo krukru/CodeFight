@@ -26,6 +26,7 @@ public class SimpleConditionalStrategy extends AbstractFighterStrategy {
     Do().attack(Attacks.Jab);
     Do().attack(Attacks.Jab);
     Do().attack(Attacks.Cross);
+    Do().recoverStaminaUpTo(80);
   }
 
   public void actBlockAttack() {
