@@ -120,6 +120,8 @@ public class Fighter {
 
   public void attack(AbstractAttack attack) {
     this.castingAttack = attack;
+    Stance oldStance = stance;
+    setStance(Stance.OPEN);
     visualizer.attackStarted(this, attack);
     if (listener == null) {
       throw new NullPointerException("Attack happened, but no listener was set!");
@@ -133,7 +135,7 @@ public class Fighter {
       visualizer.attackInterrupted(this, attack);
     } finally {
       this.stamina = Math.max(0, stamina - attack.getStaminaCost());
-      this.stance = Stance.NORMAL;
+      setStance(oldStance);
       this.castingAttack = null;
     }
   }

@@ -3,5 +3,6 @@ package kru.codefight.fighter;
 public enum Stance {
   NORMAL,
   BLOCKING,
-  DODGING
+  DODGING,
+  OPEN /* stance when attacking or staggering */
 }

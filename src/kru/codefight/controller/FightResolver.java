@@ -9,7 +9,8 @@ public class FightResolver {
 
   private static final int MINIMAL_STUN_DURATION = 100;
   private static final int DAMAGE_MULTIPLIER = 2;
-  private static final int STUN_MULTIPLIER = 2;
+  private static final int STUN_OPEN_MODIFIER = 2;
+  public static final double STUN_BLOCKING_MODIFIER = 0.1;
 
   public void resolveAttack(FighterThread attackerThread, FighterThread defenderThread,
                             AbstractAttack attack) {
@@ -37,6 +38,9 @@ public class FightResolver {
       case NORMAL:
         result = attack.getFullDamage();
         break;
+      case OPEN:
+        result = DAMAGE_MULTIPLIER * attack.getFullDamage();
+        break;
       case BLOCKING:
         result = attack.getBlockedDamage();
         break;
@@ -45,9 +49,6 @@ public class FightResolver {
         break;
       default:
         throw new IllegalStateException();
-    }
-    if (defender.isAttacking()) {
-      result *= DAMAGE_MULTIPLIER;
     }
     result *= attacker.getAttackIntensityFactor();
     return result;
@@ -59,17 +60,17 @@ public class FightResolver {
       case NORMAL:
         result = attack.getStunDurationInMs();
         break;
+      case OPEN:
+        result = Math.max(STUN_OPEN_MODIFIER * attack.getStunDurationInMs(), MINIMAL_STUN_DURATION);
+        break;
       case BLOCKING:
-        result = attack.getStunDurationInMs() / 10;
+        result = (int)(STUN_BLOCKING_MODIFIER * attack.getStunDurationInMs());
         break;
       case DODGING:
         result = 0;
         break;
       default:
         throw new IllegalStateException();
-    }
-    if (defender.isAttacking()) {
-      result = Math.max(STUN_MULTIPLIER * result, MINIMAL_STUN_DURATION);
     }
     result *= attacker.getAttackIntensityFactor();
     return result;
