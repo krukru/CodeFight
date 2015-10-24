@@ -19,62 +19,45 @@ public class ConsoleVisualizer extends AbstractFightVisualizer {
 
   @Override
   public void attackStarted(Fighter attacker, AbstractAttack attack) {
-    startConsoleColor(attacker.getColor());
-    System.out.println(String.format("%1$s fighter started casting a %2$s.",
-        attacker.getColor(), attack.getClass().getSimpleName()));
-    endConsoleColor();
+    printlnInColor(attacker.getColor(),String.format("%1$s fighter started casting a %2$s.",
+        attacker.getColor(), attack.getClass().getSimpleName()) );
   }
 
   @Override
   public void attackLanded(Fighter attacker, Fighter defender, AbstractAttack attack) {
-    startConsoleColor(attacker.getColor());
-    System.out.println(String.format("%1$s fighter landed a %2$s with %3$s%% strength. Opponent " +
-            "had stance %4$s.",
+    printlnInColor(attacker.getColor(),
+        String.format("%1$s fighter landed a %2$s with %3$s%% strength. Opponent had stance %4$s.",
         attacker.getColor(), attack.getClass().getSimpleName(),
         100 * attacker.getAttackIntensityFactor(), defender.getStance()));
-    System.out.println(String.format("%1$s fighter remaining HP: %2$s.",
+    printlnInColor(defender.getColor(), String.format("%1$s fighter remaining HP: %2$s.",
         defender.getColor(), defender.getHitPoints()));
-    endConsoleColor();
   }
 
   @Override
   public void attackInterrupted(Fighter attacker, AbstractAttack attack) {
-    startConsoleColor(attacker.getColor());
-    System.out.println(String.format("%1$s fighter was interrupted while casting %2$s",
+    printlnInColor(attacker.getColor(), String.format("%1$s fighter was interrupted while casting %2$s",
         attacker.getColor(), attack.getClass().getSimpleName()));
-    endConsoleColor();
   }
 
   @Override
   public void stanceChanged(Fighter fighter, Stance newStance) {
-    startConsoleColor(fighter.getColor());
-    System.out.println(String.format("%1$s fighter changed stance to %2$s",
+    printlnInColor(fighter.getColor(), String.format("%1$s fighter changed stance to %2$s",
         fighter.getColor(), newStance));
-    endConsoleColor();
   }
 
   @Override
   public void staminaRecovered(Fighter fighter, int oldStamina) {
-    startConsoleColor(fighter.getColor());
-    System.out.println(String.format("%1$s fighter recovered stamina: %2$s -> %3$s",
+    printlnInColor(fighter.getColor(), String.format("%1$s fighter recovered stamina: %2$s -> %3$s",
         fighter.getColor(), oldStamina, fighter.getStamina()));
-    endConsoleColor();
   }
 
-  private void startConsoleColor(FighterColor color) {
-    switch (color) {
-      case RED:
-        System.out.print(ANSI_RED);
-        break;
-      case BLUE:
-        System.out.print(ANSI_BLUE);
-        break;
-      default:
-        //nop
+  private void printlnInColor(FighterColor color, String output) {
+    String consoleColor;
+    if (color == FighterColor.RED) {
+      consoleColor = ANSI_RED;
+    } else {
+      consoleColor = ANSI_BLUE;
     }
-  }
-
-  private void endConsoleColor() {
-    System.out.print(ANSI_RESET);
+    System.out.println(consoleColor + output + ANSI_RESET);
   }
 }
