@@ -119,13 +119,13 @@ public class Fighter {
   }
 
   public void attack(AbstractAttack attack) {
-    this.castingAttack = attack;
-    Stance oldStance = stance;
-    setStance(Stance.OPEN);
-    visualizer.attackStarted(this, attack);
     if (listener == null) {
       throw new NullPointerException("Attack happened, but no listener was set!");
     }
+    this.castingAttack = attack;
+    Stance oldStance = stance;
+    visualizer.attackStarted(this, attack);
+    setStance(Stance.OPEN);
     int castTime = attack.getCastTimeInMs();
     try {
       Thread.sleep(castTime);
