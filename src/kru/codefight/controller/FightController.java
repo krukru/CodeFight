@@ -1,7 +1,5 @@
 package kru.codefight.controller;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import kru.codefight.core.FightOutcome;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
@@ -58,7 +56,7 @@ public class FightController implements FightListener {
     } else if (attacker == blueFighter) {
       return blueFighterThread;
     } else {
-      throw new InvalidStateException("Some funny stuff right here...");
+      throw new IllegalStateException("Some funny stuff right here...");
     }
   }
 
@@ -68,7 +66,7 @@ public class FightController implements FightListener {
     } else if (attacker == blueFighter) {
       return redFighterThread;
     } else {
-      throw new InvalidStateException("Some funny stuff right here...");
+      throw new IllegalStateException("Some funny stuff right here...");
     }
   }
 
