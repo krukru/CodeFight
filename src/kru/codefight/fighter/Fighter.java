@@ -7,7 +7,7 @@ import kru.codefight.logger.Logger;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
-//@TODO: po�isti ovaj satara� od rasporeda gettera/settera/varijabli
+//@TODO: počisti ovaj sataraš od rasporeda gettera/settera/varijabli
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
   private static final int MAX_STAMINA = 100;
@@ -69,7 +69,7 @@ public class Fighter {
   }
 
   public double getAttackIntensityFactor() {
-    return Math.max(0.1, (double)stamina / MAX_STAMINA); //@TODO: neki eksponencijalni pad možda?
+    return Math.max(0.1, (double)stamina / MAX_STAMINA); //@TODO: neki eksponencijalni pad moĹľda?
   }
 
   public void recoverStamina() {
@@ -117,6 +117,9 @@ public class Fighter {
       this.stamina = Math.max(0, stamina - attack.getStaminaCost());
       this.stance = Stance.NORMAL;
       this.isAttacking = false;
+      //@TODO: znači problem je što opponent vidi da isAttacting je true i zabilježi si da treba
+      //napraviti interrupt. No međutim ovaj je već izašo iz attack(), postavio si isAttacking u
+      // false i krenuo se oporavljati (sleepa) i interrupt ga ubije iz TOG sleepa.
     }
   }
 
@@ -133,11 +136,15 @@ public class Fighter {
       if (canSeeOpponent()) {
         FighterStatus opponentStatus = new FighterStatus(opponent); //razmisli da fighter ima
         // metodu FighterStatus getStatus()
+        boolean strategyFound = false;
         for (ConditionalStrategy cs : strategy.getStrategyList()) {
           if (cs.predicateSatisfied(opponentStatus)) {
             cs.act();
+            strategyFound = true;
             break;
           }
+        }
+        if (strategyFound == false) {
           strategy.act(); //no conditions satisfied, do main act
         }
       } else {

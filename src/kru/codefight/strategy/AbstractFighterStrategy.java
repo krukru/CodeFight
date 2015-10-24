@@ -25,6 +25,9 @@ public abstract class AbstractFighterStrategy {
   }
 
   public final List<ConditionalStrategy> getStrategyList() {
+    if (strategyList == null) {
+      strategyList = registerConditionalStrategies();
+    }
     return strategyList;
   }
 

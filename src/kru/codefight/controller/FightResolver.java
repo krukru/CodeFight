@@ -26,7 +26,8 @@ public class FightResolver {
     if (stunDuration > 0) {
       //@TODO: refactor
       defender.addStunDuration(stunDuration);
-      if (defender.isAttacking()) {
+      if (defender.isAttacking() && defenderThread.getState() == Thread.State.TIMED_WAITING) {
+        //if he's attacking, and still casting the attack
         defenderThread.interrupt();
       }
     }
