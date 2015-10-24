@@ -125,7 +125,7 @@ public class Fighter {
     try {
       Thread.sleep(castTime);
       listener.attackHappened(this, attack);
-      visualizer.attackLanded(this, , attack);
+      visualizer.attackLanded(this, opponent, attack);
     } catch (InterruptedException e) {
       visualizer.attackInterrupted(this, attack);
     } finally {
