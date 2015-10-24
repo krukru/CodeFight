@@ -7,12 +7,15 @@ import kru.codefight.logger.Logger;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
+
 //@TODO: počisti ovaj sataraš od rasporeda gettera/settera/varijabli
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
   private static final int MAX_STAMINA = 100;
 
   private AbstractFighterStrategy strategy;
+
+  private AbstractAttack castingAttack;
 
   private int stamina;
   private Stance stance;
@@ -21,19 +24,30 @@ public class Fighter {
 
   private FighterColor fighterColor;
 
-  private volatile long stunDuration; //in milis //possibly only volatile
-  private volatile boolean fightActive;
+  private volatile long stunDuration; //in milis
   private volatile int hitPoints;
-  private volatile boolean isAttacking = false;
+  private boolean fightActive;
 
   private FightListener listener;
+
+  public Fighter(AbstractFighterStrategy strategy, FighterColor fighterColor) {
+    this.api = new FighterApi(this);
+    initFighterStats(MAX_HIT_POINTS, MAX_STAMINA);
+    if (strategy == null) {
+      this.strategy = new NumnutsStrategy();
+    } else {
+      this.strategy = strategy;
+    }
+    this.strategy.setFighter(this);
+    this.fighterColor = fighterColor;
+  }
 
   public FighterApi Api() {
     return api;
   }
 
   public boolean isAttacking() {
-    return isAttacking;
+    return castingAttack != null;
   }
 
   public long getStunDuration() {
@@ -69,7 +83,7 @@ public class Fighter {
   }
 
   public double getAttackIntensityFactor() {
-    return Math.max(0.1, (double)stamina / MAX_STAMINA); //@TODO: neki eksponencijalni pad moĹľda?
+    return Math.max(0.1, (double) stamina / MAX_STAMINA); //@TODO: neki eksponencijalni pad moĹľda?
   }
 
   public void recoverStamina() {
@@ -82,6 +96,10 @@ public class Fighter {
     return opponent;
   }
 
+  public AbstractAttack getCastingAttack() {
+    return castingAttack;
+  }
+
   public boolean isKnockedOut() {
     return hitPoints <= 0;
   }
@@ -90,20 +108,8 @@ public class Fighter {
     return stamina;
   }
 
-  public Fighter(AbstractFighterStrategy strategy, FighterColor fighterColor) {
-    this.api = new FighterApi(this);
-    initFighterStats(MAX_HIT_POINTS, MAX_STAMINA);
-    if (strategy == null) {
-      this.strategy = new NumnutsStrategy();
-    } else {
-      this.strategy = strategy;
-    }
-    this.strategy.setFighter(this);
-    this.fighterColor = fighterColor;
-  }
-
   public void attack(AbstractAttack attack) {
-    this.isAttacking = true;
+    this.castingAttack = attack;
     if (listener == null) {
       throw new NullPointerException("Attack happened, but no listener was set!");
     }
@@ -116,10 +122,7 @@ public class Fighter {
     } finally {
       this.stamina = Math.max(0, stamina - attack.getStaminaCost());
       this.stance = Stance.NORMAL;
-      this.isAttacking = false;
-      //@TODO: znači problem je što opponent vidi da isAttacting je true i zabilježi si da treba
-      //napraviti interrupt. No međutim ovaj je već izašo iz attack(), postavio si isAttacking u
-      // false i krenuo se oporavljati (sleepa) i interrupt ga ubije iz TOG sleepa.
+      this.castingAttack = null;
     }
   }
 
