@@ -10,7 +10,7 @@ public class FightResolver {
   private static final int MINIMAL_STUN_DURATION = 100;
   private static final int DAMAGE_MULTIPLIER = 2;
   private static final int STUN_OPEN_MODIFIER = 2;
-  public static final double STUN_BLOCKING_MODIFIER = 0.1;
+  public static final double STUN_BLOCKING_MODIFIER = 0.2;
 
   public void resolveAttack(FighterThread attackerThread, FighterThread defenderThread,
                             AbstractAttack attack) {
@@ -20,14 +20,13 @@ public class FightResolver {
     int damage = getDamage(attacker, defender, attack);
     if (damage > 0) {
       defender.takeDamage(damage);
-    }
-
-    int stunDuration = getStunDuration(attacker, defender, attack);
-    if (stunDuration > 0) {
-      defender.addStunDuration(stunDuration);
-      if (defender.isAttacking() && defenderThread.getState() == Thread.State.TIMED_WAITING) {
-        //if he's attacking, and still casting the attack
-        defenderThread.interrupt();
+      int stunDuration = getStunDuration(attacker, defender, attack);
+      if (stunDuration > 0) {
+        defender.addStunDuration(stunDuration);
+        if (defender.isAttacking() && defenderThread.getState() == Thread.State.TIMED_WAITING) {
+          //if he's attacking, and still casting the attack
+          defenderThread.interrupt();
+        }
       }
     }
   }
@@ -45,7 +44,7 @@ public class FightResolver {
         result = attack.getBlockedDamage();
         break;
       case DODGING:
-        result = 0;
+        result = (attack.isDodgeable()) ? attack.getFullDamage() : 0;
         break;
       default:
         throw new IllegalStateException();
@@ -58,6 +57,8 @@ public class FightResolver {
     int result;
     switch (defender.getStance()) {
       case NORMAL:
+        //fallthrough
+      case DODGING:
         result = attack.getStunDurationInMs();
         break;
       case OPEN:
@@ -65,9 +66,6 @@ public class FightResolver {
         break;
       case BLOCKING:
         result = (int)(STUN_BLOCKING_MODIFIER * attack.getStunDurationInMs());
-        break;
-      case DODGING:
-        result = 0;
         break;
       default:
         throw new IllegalStateException();
