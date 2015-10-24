@@ -4,9 +4,6 @@ import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.FighterStatus;
 import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
-import kru.codefight.logger.AbstractFightVisualizer;
-import kru.codefight.logger.Visualizer;
-import kru.codefight.logger.VisualizerFactory;
 
 public class FighterApi {
 
@@ -18,6 +15,9 @@ public class FighterApi {
 
   public void attack(AbstractAttack attack) {
     resolveAccumulatedStun();
+    if (fighter.getStance() == Stance.BLOCKING) {
+      changeStance(Stance.NORMAL);
+    }
     fighter.attack(attack);
   }
 
