@@ -24,7 +24,6 @@ public class FighterApi {
   public void changeStance(Stance stance) {
     resolveAccumulatedStun();
     if (fighter.getStance() != stance) {
-      delay(500); //stance change time, vidi kako ovo pametnije rješiti
       fighter.setStance(stance);
     }
   }
