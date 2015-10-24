@@ -12,6 +12,8 @@ import kru.codefight.strategy.examples.NumnutsStrategy;
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
   private static final int MAX_STAMINA = 100;
+  public static final int STAMINA_RECOVERY_AMOUNT = 25;
+  public static final double MINIMAL_ATTACK_INTENSITY_FACTOR = 0.1;
 
   private AbstractFighterStrategy strategy;
 
@@ -91,12 +93,13 @@ public class Fighter {
   }
 
   public double getAttackIntensityFactor() {
-    return Math.max(0.1, (double) stamina / MAX_STAMINA);
+    return Math.max(MINIMAL_ATTACK_INTENSITY_FACTOR, (double) stamina / MAX_STAMINA);
   }
 
   public void recoverStamina() {
-    visualizer.staminaRecovered(this, stamina);
-    this.stamina = Math.min(MAX_STAMINA, stamina + 25);
+    int oldStamina = stamina;
+    this.stamina = Math.min(MAX_STAMINA, stamina + STAMINA_RECOVERY_AMOUNT);
+    visualizer.staminaRecovered(this, oldStamina);
   }
 
   public Fighter getOpponent() {

@@ -15,10 +15,10 @@ public class ConsoleVisualizer extends AbstractFightVisualizer {
 
   @Override
   public void attackLanded(Fighter attacker, Fighter defender, AbstractAttack attack) {
-    System.out.println(String.format("%1$s fighter landed a %2$s with %3$s% strength. Opponent " +
+    System.out.println(String.format("%1$s fighter landed a %2$s with %3$s%% strength. Opponent " +
             "had stance %4$s.",
         attacker.getColor(), attack.getClass().getSimpleName(),
-        attacker.getAttackIntensityFactor(), defender.getStamina()));
+        100 * attacker.getAttackIntensityFactor(), defender.getStance()));
     System.out.println(String.format("%1$s fighter remaining HP: %2$s.",
         defender.getColor(), defender.getHitPoints()));
   }
