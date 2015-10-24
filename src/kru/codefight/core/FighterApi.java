@@ -23,17 +23,15 @@ public class FighterApi {
 
   public void changeStance(Stance stance) {
     resolveAccumulatedStun();
-    fighter.setStance(stance);
+    if (fighter.getStance() != stance) {
+      delay(500); //stance change time, vidi kako ovo pametnije rješiti
+      fighter.setStance(stance);
+    }
   }
-
   public void recoverStamina() {
     fighter.recoverStamina();
-    try {
-      Thread.sleep(500);
-      fighter.decreaseStunDuration(500);
-    } catch (InterruptedException e) {
-      System.out.println("Got woken up while recovering!" + fighter.getColor().toString());
-    }
+    delay(500);
+    fighter.decreaseStunDuration(500);
   }
 
   public void recoverStaminaUpTo(int targetStamina) {
@@ -47,11 +45,21 @@ public class FighterApi {
 
   public boolean tryScanOpponent(FighterStatus opponentStatus) {
     resolveAccumulatedStun();
+    //doesn't have a delay
     if (fighter.canSeeOpponent()) {
       opponentStatus.loadStatus(fighter.getOpponent());
       return true;
     } else {
       return false;
+    }
+  }
+
+
+  private void delay(long milis) {
+    try {
+      Thread.sleep(milis);
+    } catch (InterruptedException e) {
+      System.out.println("This should never happen!" + fighter.getColor().toString());
     }
   }
 
