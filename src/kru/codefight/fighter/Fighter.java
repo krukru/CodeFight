@@ -5,8 +5,9 @@ import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.logger.Logger;
 import kru.codefight.strategy.AbstractFighterStrategy;
+import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
-
+//@TODO: poèisti ovaj sataraš od rasporeda gettera/settera/varijabli
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
   private static final int MAX_STAMINA = 100;
@@ -129,7 +130,19 @@ public class Fighter {
     this.opponent = opponent;
     this.fightActive = true;
     while (fightActive) {
-      strategy.act();
+      if (canSeeOpponent()) {
+        FighterStatus opponentStatus = new FighterStatus(opponent); //razmisli da fighter ima
+        // metodu FighterStatus getStatus()
+        for (ConditionalStrategy cs : strategy.getStrategyList()) {
+          if (cs.predicateSatisfied(opponentStatus)) {
+            cs.act();
+            break;
+          }
+          strategy.act(); //no conditions satisfied, do main act
+        }
+      } else {
+        strategy.act();
+      }
     }
   }
 

@@ -35,6 +35,7 @@ public class FighterApi {
   }
 
   public void recoverStaminaUpTo(int targetStamina) {
+    //@TODO: dont recover if you're already satisfied the level
     if (targetStamina < 0 || targetStamina > 100) {
       throw new IllegalArgumentException();
     }
@@ -46,7 +47,7 @@ public class FighterApi {
   public boolean tryScanOpponent(FighterStatus opponentStatus) {
     if (!resolveAccumulatedStun()) {
       if (fighter.canSeeOpponent()) {
-        opponentStatus.setFighter(fighter.getOpponent());
+        opponentStatus.loadStatus(fighter.getOpponent());
         return true;
       } else {
         return false;

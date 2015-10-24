@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 
 public abstract class AbstractFighterStrategy {
 
-  private PriorityQueue<ConditionalStrategy> strategyQueue;
+  private List<ConditionalStrategy> strategyList;
   private Fighter fighter = null;
 
   public final void setFighter(Fighter fighter) {
@@ -24,19 +24,23 @@ public abstract class AbstractFighterStrategy {
     this.fighter = fighter;
   }
 
+  public final List<ConditionalStrategy> getStrategyList() {
+    return strategyList;
+  }
+
   protected final FighterApi Do() {
     return fighter.Api();
   }
 
   public AbstractFighterStrategy() {
-    this.strategyQueue = registerConditionalStrategies();
+    this.strategyList = registerConditionalStrategies();
   }
 
-  protected PriorityQueue<ConditionalStrategy> registerConditionalStrategies() {
+  protected List<ConditionalStrategy> registerConditionalStrategies() {
     //here you can give a set of conditions that will trigger
     //this way, your act() is just the default act()
     //based on what condition triggers, that act it trigger
-    return new PriorityQueue<>();
+    return new ArrayList<>();
   }
 
   /**

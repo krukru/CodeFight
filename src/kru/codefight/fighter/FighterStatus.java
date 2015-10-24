@@ -1,22 +1,27 @@
 package kru.codefight.fighter;
 
 public class FighterStatus {
-  private Fighter fighter;
+
+  private int hitPoints;
+  private boolean isAttacking;
+  private Stance stance;
+
+  public void loadStatus(Fighter fighter) {
+    this.stance = fighter.getStance(); //this possibly is not a deep copy!
+    this.hitPoints = fighter.getHitPoints();
+    this.isAttacking = fighter.isAttacking();
+  }
 
   public Stance getStance() {
-    return fighter.getStance();
+    return stance;
   }
 
   public int getHitPoints() {
-    return fighter.getHitPoints();
-  }
-
-  public void setFighter(Fighter fighter) {
-    this.fighter = fighter;
+    return hitPoints;
   }
 
   public boolean isAttacking() {
-    return fighter.isAttacking();
+    return isAttacking;
   }
 
   public FighterStatus() {
@@ -24,6 +29,6 @@ public class FighterStatus {
   }
 
   public FighterStatus(Fighter fighter) {
-    this.fighter = fighter;
+    loadStatus(fighter);
   }
 }
