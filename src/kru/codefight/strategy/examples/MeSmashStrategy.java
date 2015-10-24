@@ -1,6 +1,7 @@
-package kru.codefight.strategy;
+package kru.codefight.strategy.examples;
 
 import kru.codefight.fighter.attacks.Attacks;
+import kru.codefight.strategy.AbstractFighterStrategy;
 
 public class MeSmashStrategy extends AbstractFighterStrategy {
   @Override

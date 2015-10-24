@@ -1,4 +1,6 @@
-package kru.codefight.strategy;
+package kru.codefight.strategy.examples;
+
+import kru.codefight.strategy.AbstractFighterStrategy;
 
 public class NumnutsStrategy extends AbstractFighterStrategy {
   @Override

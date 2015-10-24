@@ -5,7 +5,7 @@ import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.logger.Logger;
 import kru.codefight.strategy.AbstractFighterStrategy;
-import kru.codefight.strategy.NumnutsStrategy;
+import kru.codefight.strategy.examples.NumnutsStrategy;
 
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
