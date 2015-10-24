@@ -5,7 +5,6 @@ import kru.codefight.events.FightListener;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.logger.AbstractFightVisualizer;
 import kru.codefight.logger.Visualizer;
-import kru.codefight.logger.VisualizerFactory;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
@@ -126,7 +125,7 @@ public class Fighter {
     try {
       Thread.sleep(castTime);
       listener.attackHappened(this, attack);
-      visualizer.attackLanded(this, attack);
+      visualizer.attackLanded(this, , attack);
     } catch (InterruptedException e) {
       visualizer.attackInterrupted(this, attack);
     } finally {
