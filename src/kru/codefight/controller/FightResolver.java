@@ -3,8 +3,6 @@ package kru.codefight.controller;
 import kru.codefight.core.FightOutcome;
 import kru.codefight.fighter.Fighter;
 import kru.codefight.fighter.attacks.AbstractAttack;
-import kru.codefight.logger.AbstractFightVisualizer;
-import kru.codefight.logger.Visualizer;
 import kru.codefight.thread.FighterThread;
 
 public class FightResolver {
@@ -12,8 +10,6 @@ public class FightResolver {
   private static final int MINIMAL_STUN_DURATION = 100;
   private static final int DAMAGE_MULTIPLIER = 2;
   private static final int STUN_MULTIPLIER = 2;
-
-  private AbstractFightVisualizer visualizer = Visualizer.instance();
 
   public void resolveAttack(FighterThread attackerThread, FighterThread defenderThread,
                             AbstractAttack attack) {

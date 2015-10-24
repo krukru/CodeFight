@@ -118,6 +118,7 @@ public class Fighter {
 
   public void attack(AbstractAttack attack) {
     this.castingAttack = attack;
+    visualizer.attackStarted(this, attack);
     if (listener == null) {
       throw new NullPointerException("Attack happened, but no listener was set!");
     }
@@ -125,6 +126,7 @@ public class Fighter {
     try {
       Thread.sleep(castTime);
       listener.attackHappened(this, attack);
+      visualizer.attackLanded(this, attack);
     } catch (InterruptedException e) {
       visualizer.attackInterrupted(this, attack);
     } finally {

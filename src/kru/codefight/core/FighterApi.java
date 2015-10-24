@@ -11,7 +11,6 @@ import kru.codefight.logger.VisualizerFactory;
 public class FighterApi {
 
   private Fighter fighter;
-  private AbstractFightVisualizer visualizer =  Visualizer.instance();
 
   public FighterApi(Fighter fighter) {
     this.fighter = fighter;
