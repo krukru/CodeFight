@@ -65,7 +65,7 @@
 
 
 
-    <property name="compiler.args.codefight" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+    <property name="compiler.args.codefight" value="-encoding UTF-8 -source 1.8 ${compiler.args}"/>
 
     <property name="codefight.output.dir" value="${module.codefight.basedir}/out/production/codefight"/>
     <property name="codefight.testoutput.dir" value="${module.codefight.basedir}/out/test/codefight"/>
