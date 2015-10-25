@@ -1,6 +1,8 @@
 package kru.codefight.visualizer.label;
 
+import javax.management.timer.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
@@ -92,16 +94,31 @@ public class Arena extends JDialog {
 
   public void enqueueChange(Consumer<Arena> change) {
     pendingMoves.addLast(change);
+
+  }
+
+  private void nextAction() {
+    pendingMoves.getFirst().accept(this);
+    pendingMoves.removeFirst();
   }
 
   private void onOK() {
-    pendingMoves.getFirst().accept(this);
-    pendingMoves.removeFirst();
+    buttonOK.setEnabled(false);
+    Timer t = new Timer(1000, new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        nextAction();
+      }
+    });
+    t.setDelay(1000);
+    t.setRepeats(true);
+    t.start();
   }
 
   private void onCancel() {
 // add your code here if necessary
     dispose();
+    System.exit(0);
   }
 
 }

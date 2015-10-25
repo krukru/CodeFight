@@ -32,8 +32,8 @@ public class FighterApi {
   }
   public void recoverStamina() {
     fighter.recoverStamina();
-    delay(500);
-    fighter.decreaseStunDuration(500);
+    delay(1000);
+    fighter.decreaseStunDuration(1000);
   }
 
   public void recoverStaminaUpTo(int targetStamina) {

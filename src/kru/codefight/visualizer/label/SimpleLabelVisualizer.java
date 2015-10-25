@@ -31,9 +31,15 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
   public void attackLanded(Fighter attacker, Fighter defender, AbstractAttack attack) {
     String text = String.format("HP: %1$s", defender.getHitPoints());
     if (defender.getColor() == FighterColor.RED) {
+      arena.enqueueChange(a -> a.getBlueCasting().setText(a.getBlueCasting().getText() + " - " +
+          "Landed!"));
       arena.enqueueChange(a -> a.getRedHp().setText(text));
+      arena.enqueueChange(a -> a.getBlueCasting().setText(""));
     } else {
+      arena.enqueueChange(a -> a.getRedCasting().setText(a.getRedCasting().getText() + " - " +
+          "Landed!"));
       arena.enqueueChange(a -> a.getBlueHp().setText(text));
+      arena.enqueueChange(a -> a.getRedCasting().setText(""));
     }
   }
 
