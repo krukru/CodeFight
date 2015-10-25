@@ -1,13 +1,10 @@
 package kru.codefight.strategy;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import kru.codefight.fighter.Fighter;
 import kru.codefight.core.FighterApi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public abstract class AbstractFighterStrategy {
 
@@ -19,7 +16,7 @@ public abstract class AbstractFighterStrategy {
       throw new NullPointerException("Fighter is null");
     }
     if (this.fighter != null) {
-      throw new InvalidStateException("Fighter is already set");
+      throw new IllegalStateException("Fighter is already set");
     }
     this.fighter = fighter;
   }
