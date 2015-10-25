@@ -2,6 +2,10 @@ package kru.codefight.visualizer.label;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.LinkedList;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class Arena extends JDialog {
   private JPanel contentPane;
@@ -54,6 +58,8 @@ public class Arena extends JDialog {
   private JLabel redCasting;
   private JLabel blueCasting;
 
+  private LinkedList<Consumer<Arena>> pendingMoves = new LinkedList<>();
+
   public Arena() {
     setContentPane(contentPane);
     setModal(false);
@@ -84,9 +90,13 @@ public class Arena extends JDialog {
 
   }
 
+  public void enqueueChange(Consumer<Arena> change) {
+    pendingMoves.addLast(change);
+  }
+
   private void onOK() {
-// add your code here
-    dispose();
+    pendingMoves.getFirst().accept(this);
+    pendingMoves.removeFirst();
   }
 
   private void onCancel() {

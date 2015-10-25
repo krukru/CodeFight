@@ -22,11 +22,11 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
     String text1 = String.format("Casting %1$s", attack.getClass().getSimpleName());
     String text2 = String.format("Stamina: %1$s", attacker.getStamina());
     if (attacker.getColor() == FighterColor.RED) {
-      arena.getRedCasting().setText(text1);
-      arena.getRedStamina().setText(text2);
+      arena.enqueueChange(a -> a.getRedCasting().setText(text1));
+      arena.enqueueChange(a -> a.getRedStamina().setText(text2));
     } else {
-      arena.getBlueCasting().setText(text1);
-      arena.getBlueStamina().setText(text2);
+      arena.enqueueChange(a -> a.getBlueCasting().setText(text1));
+      arena.enqueueChange(a -> a.getBlueStamina().setText(text2));
     }
   }
 
@@ -34,9 +34,9 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
   public void attackLanded(Fighter attacker, Fighter defender, AbstractAttack attack) {
     String text = String.format("HP: %1$s", defender.getHitPoints());
     if (defender.getColor() == FighterColor.RED) {
-      arena.getRedHp().setText(text);
+      arena.enqueueChange(a -> a.getRedHp().setText(text));
     } else {
-      arena.getBlueHp().setText(text);
+      arena.enqueueChange(a -> a.getBlueHp().setText(text));
     }
   }
 
@@ -44,9 +44,9 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
   public void attackInterrupted(Fighter attacker, AbstractAttack attack) {
     String text = "Attack interrupted!";
     if (attacker.getColor() == FighterColor.RED) {
-      arena.getRedCasting().setText(text);
+      arena.enqueueChange(a -> a.getRedCasting().setText(text));
     } else {
-      arena.getBlueCasting().setText(text);
+      arena.enqueueChange(a -> a.getBlueCasting().setText(text));
     }
   }
 
@@ -54,9 +54,9 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
   public void stanceChanged(Fighter fighter, Stance newStance) {
     String text = String.format("%1$s", fighter.getStance());
     if (fighter.getColor() == FighterColor.RED) {
-      arena.getRedStance().setText(text);
+      arena.enqueueChange(a -> a.getRedStance().setText(text));
     } else {
-      arena.getBlueStance().setText(text);
+      arena.enqueueChange(a -> a.getBlueStance().setText(text));
     }
   }
 
@@ -65,11 +65,11 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
     String text1 = "Recovering stamina";
     String text2 = String.format("Stamina: %1$s", fighter.getStamina());
     if (fighter.getColor() == FighterColor.RED) {
-      arena.getRedCasting().setText(text1);
-      arena.getRedStamina().setText(text2);
+      arena.enqueueChange(a -> a.getRedCasting().setText(text1));
+      arena.enqueueChange(a -> a.getRedStamina().setText(text2));
     } else {
-      arena.getBlueCasting().setText(text1);
-      arena.getBlueStamina().setText(text2);
+      arena.enqueueChange(a -> a.getBlueCasting().setText(text1));
+      arena.enqueueChange(a -> a.getBlueStamina().setText(text2));
     }
   }
 }
