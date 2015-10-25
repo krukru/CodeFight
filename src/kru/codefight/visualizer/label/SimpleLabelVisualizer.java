@@ -19,14 +19,11 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
 
   @Override
   public void attackStarted(Fighter attacker, AbstractAttack attack) {
-    String text1 = String.format("Casting %1$s", attack.getClass().getSimpleName());
-    String text2 = String.format("Stamina: %1$s", attacker.getStamina());
+    String text = String.format("Casting %1$s", attack.getClass().getSimpleName());
     if (attacker.getColor() == FighterColor.RED) {
-      arena.enqueueChange(a -> a.getRedCasting().setText(text1));
-      arena.enqueueChange(a -> a.getRedStamina().setText(text2));
+      arena.enqueueChange(a -> a.getRedCasting().setText(text));
     } else {
-      arena.enqueueChange(a -> a.getBlueCasting().setText(text1));
-      arena.enqueueChange(a -> a.getBlueStamina().setText(text2));
+      arena.enqueueChange(a -> a.getBlueCasting().setText(text));
     }
   }
 

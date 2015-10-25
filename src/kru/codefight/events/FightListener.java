@@ -14,4 +14,6 @@ public interface FightListener {
   public abstract void stanceChanged(Fighter fighter, Stance newStance);
 
   public abstract void staminaRecovered(Fighter fighter, int oldStamina);
+
+  //stamina changed event umjesto stamina recovered
 }

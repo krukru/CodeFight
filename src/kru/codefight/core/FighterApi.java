@@ -56,6 +56,14 @@ public class FighterApi {
     }
   }
 
+  public void waitFor(long milis) {
+    if (milis <= 0) {
+      throw new IllegalArgumentException();
+    }
+    delay(milis);
+    fighter.decreaseStunDuration(milis);
+  }
+
 
   private void delay(long milis) {
     try {

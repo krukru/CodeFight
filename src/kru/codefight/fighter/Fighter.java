@@ -60,18 +60,18 @@ public class Fighter {
     this.stunDuration = 0;
   }
 
-  public void addStunDuration(long stunDuration) {
+  public void addStunDuration(long addStunDurationBy) {
     if (stunDuration < 0) {
       throw new IllegalArgumentException();
     }
-    this.stunDuration += stunDuration;
+    this.stunDuration += addStunDurationBy;
   }
 
-  public void decreaseStunDuration(long stunDuration) {
+  public void decreaseStunDuration(long decreaseStunDurationBy) {
     if (stunDuration < 0) {
       throw new IllegalArgumentException();
     }
-    this.stunDuration -= stunDuration;
+    this.stunDuration = Math.max(0, stunDuration - decreaseStunDurationBy);
   }
 
   public FighterColor getColor() {
@@ -88,7 +88,7 @@ public class Fighter {
 
   public void setStance(Stance stance) {
     this.stance = stance;
-    listener.ifPresent(fightListener -> fightListener.stanceChanged(this,stance));
+    listener.ifPresent(fightListener -> fightListener.stanceChanged(this, stance));
   }
 
   public double getAttackIntensityFactor() {
