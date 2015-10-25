@@ -30,6 +30,7 @@ public class FighterApi {
       fighter.setStance(stance);
     }
   }
+
   public void recoverStamina() {
     fighter.recoverStamina();
     delay(1000);
@@ -75,11 +76,14 @@ public class FighterApi {
 
   private void resolveAccumulatedStun() {
     if (fighter.getStunDuration() > 0) {
+      Stance oldStance = fighter.getStance();
+      fighter.setStance(Stance.OPEN);
       try {
         Thread.sleep(fighter.getStunDuration());
       } catch (InterruptedException e) {
         System.out.println("This should never happen!" + fighter.getColor().toString());
       } finally {
+        fighter.setStance(oldStance);
         fighter.resetStun();
       }
     }
