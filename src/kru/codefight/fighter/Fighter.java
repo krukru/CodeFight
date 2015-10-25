@@ -6,8 +6,8 @@ import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.strategy.AbstractFighterStrategy;
 import kru.codefight.strategy.ConditionalStrategy;
 import kru.codefight.strategy.examples.NumnutsStrategy;
-import kru.codefight.visualizer.AbstractFightVisualizer;
-import kru.codefight.visualizer.Visualizer;
+
+import java.util.Optional;
 
 public class Fighter {
   private static final int MAX_HIT_POINTS = 100;
@@ -30,8 +30,7 @@ public class Fighter {
   private volatile int hitPoints;
   private boolean fightActive;
 
-  private FightListener listener;
-  private AbstractFightVisualizer visualizer = Visualizer.instance();
+  private Optional<FightListener> listener = Optional.empty();
 
   public Fighter(AbstractFighterStrategy strategy, FighterColor fighterColor) {
     this.api = new FighterApi(this);
@@ -89,7 +88,7 @@ public class Fighter {
 
   public void setStance(Stance stance) {
     this.stance = stance;
-    visualizer.stanceChanged(this, stance);
+    listener.ifPresent(fightListener -> fightListener.stanceChanged(this,stance));
   }
 
   public double getAttackIntensityFactor() {
@@ -99,7 +98,7 @@ public class Fighter {
   public void recoverStamina() {
     int oldStamina = stamina;
     this.stamina = Math.min(MAX_STAMINA, stamina + STAMINA_RECOVERY_AMOUNT);
-    visualizer.staminaRecovered(this, oldStamina);
+    listener.ifPresent(fightListener -> fightListener.staminaRecovered(this, oldStamina));
   }
 
   public Fighter getOpponent() {
@@ -119,20 +118,16 @@ public class Fighter {
   }
 
   public void attack(AbstractAttack attack) {
-    if (listener == null) {
-      throw new NullPointerException("Attack happened, but no listener was set!");
-    }
     this.castingAttack = attack;
     Stance oldStance = stance;
-    visualizer.attackStarted(this, attack);
+    listener.ifPresent(fightListener -> fightListener.attackStarted(this, attack));
     setStance(Stance.OPEN);
     int castTime = attack.getCastTimeInMs();
     try {
       Thread.sleep(castTime);
-      listener.attackHappened(this, attack);
-      visualizer.attackLanded(this, opponent, attack);
+      listener.ifPresent(fightListener -> fightListener.attackLanded(this, opponent, attack));
     } catch (InterruptedException e) {
-      visualizer.attackInterrupted(this, attack);
+      listener.ifPresent(fightListener -> fightListener.attackInterrupted(this, attack));
     } finally {
       this.stamina = Math.max(0, stamina - attack.getStaminaCost());
       setStance(oldStance);
@@ -151,9 +146,9 @@ public class Fighter {
     this.fightActive = true;
     while (fightActive) {
       if (canSeeOpponent()) {
-        FighterStatus opponentStatus = new FighterStatus(opponent); //razmisli da fighter ima
-        // metodu FighterStatus getStatus()
+        FighterStatus opponentStatus = new FighterStatus(opponent);
         boolean strategyFound = false;
+        //TODO smisli način da ovo bude O(1) - mora bit!
         for (ConditionalStrategy cs : strategy.getStrategyList()) {
           if (cs.predicateSatisfied(opponentStatus)) {
             cs.act();
@@ -189,7 +184,7 @@ public class Fighter {
     if (listener == null) {
       throw new NullPointerException("If you want to unsubscribe, there's a method for that.");
     }
-    this.listener = listener;
+    this.listener = Optional.of(listener);
   }
 
   public void unsubscribeFromAttackHappened() {

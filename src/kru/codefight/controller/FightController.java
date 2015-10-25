@@ -3,8 +3,11 @@ package kru.codefight.controller;
 import kru.codefight.core.FightOutcome;
 import kru.codefight.events.FightListener;
 import kru.codefight.fighter.Fighter;
+import kru.codefight.fighter.Stance;
 import kru.codefight.fighter.attacks.AbstractAttack;
 import kru.codefight.thread.FighterThread;
+import kru.codefight.visualizer.AbstractFightVisualizer;
+import kru.codefight.visualizer.Visualizer;
 
 public class FightController implements FightListener {
 
@@ -15,6 +18,8 @@ public class FightController implements FightListener {
   private FighterThread blueFighterThread;
 
   private FightResolver fightResolver = new FightResolver();
+
+  private AbstractFightVisualizer visualizer = Visualizer.instance();
 
   public FightOutcome resolveFight(Fighter redFighter, Fighter blueFighter) {
 
@@ -41,13 +46,34 @@ public class FightController implements FightListener {
   }
 
   @Override
-  public void attackHappened(Fighter attacker, AbstractAttack attack) {
+  public void attackStarted(Fighter attacker, AbstractAttack attack) {
+    visualizer.attackStarted(attacker, attack);
+  }
+
+  @Override
+  public void attackLanded(Fighter attacker, Fighter defender, AbstractAttack attack) {
     FighterThread attackerThread = getFighterThread(attacker);
-    FighterThread defenderThread = getOpponentThread(attacker);
+    FighterThread defenderThread = getFighterThread(defender);
     fightResolver.resolveAttack(attackerThread, defenderThread, attack);
+    visualizer.attackLanded(attacker, defender, attack);
     if (defenderThread.getFighter().isKnockedOut()) {
       endFight();
     }
+  }
+
+  @Override
+  public void attackInterrupted(Fighter attacker, AbstractAttack attack) {
+    visualizer.attackInterrupted(attacker, attack);
+  }
+
+  @Override
+  public void stanceChanged(Fighter fighter, Stance newStance) {
+    visualizer.stanceChanged(fighter, newStance);
+  }
+
+  @Override
+  public void staminaRecovered(Fighter fighter, int oldStamina) {
+    visualizer.staminaRecovered(fighter, oldStamina);
   }
 
   private FighterThread getFighterThread(Fighter attacker) {
@@ -56,17 +82,7 @@ public class FightController implements FightListener {
     } else if (attacker == blueFighter) {
       return blueFighterThread;
     } else {
-      throw new IllegalStateException("Some funny stuff right here...");
-    }
-  }
-
-  private FighterThread getOpponentThread(Fighter attacker) {
-    if (attacker == redFighter) {
-      return blueFighterThread;
-    } else if (attacker == blueFighter) {
-      return redFighterThread;
-    } else {
-      throw new IllegalStateException("Some funny stuff right here...");
+      throw new IllegalStateException("Some funny stuff right there...");
     }
   }
 
