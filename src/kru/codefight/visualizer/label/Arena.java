@@ -1,4 +1,4 @@
-package kru.codefight.visualizer.swing;
+package kru.codefight.visualizer.label;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -7,6 +7,52 @@ public class Arena extends JDialog {
   private JPanel contentPane;
   private JButton buttonOK;
   private JButton buttonCancel;
+
+  @Override
+  public JPanel getContentPane() {
+    return contentPane;
+  }
+
+  public JLabel getRedHp() {
+    return redHp;
+  }
+
+  public JLabel getRedStamina() {
+    return redStamina;
+  }
+
+  public JLabel getRedStance() {
+    return redStance;
+  }
+
+  public JLabel getBlueHp() {
+    return blueHp;
+  }
+
+  public JLabel getBlueStamina() {
+    return blueStamina;
+  }
+
+  public JLabel getBlueStance() {
+    return blueStance;
+  }
+
+  public JLabel getRedCasting() {
+    return redCasting;
+  }
+
+  public JLabel getBlueCasting() {
+    return blueCasting;
+  }
+
+  private JLabel redHp;
+  private JLabel redStamina;
+  private JLabel redStance;
+  private JLabel blueHp;
+  private JLabel blueStamina;
+  private JLabel blueStance;
+  private JLabel redCasting;
+  private JLabel blueCasting;
 
   public Arena() {
     setContentPane(contentPane);
@@ -49,9 +95,10 @@ public class Arena extends JDialog {
   }
 
   public static void main(String[] args) {
-    Arena dialog = new Arena();
-    dialog.pack();
-    dialog.setVisible(true);
+    Arena arena = new Arena();
+    arena.pack();
+    arena.setLocationRelativeTo(null);
+    arena.setVisible(true);
     System.exit(0);
   }
 }
