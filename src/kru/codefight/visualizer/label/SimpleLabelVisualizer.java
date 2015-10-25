@@ -12,6 +12,9 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
 
   public SimpleLabelVisualizer() {
     this.arena = new Arena();
+    arena.pack();
+    //arena.setLocationRelativeTo(null);
+    arena.setVisible(true);
   }
 
   @Override

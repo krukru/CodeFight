@@ -56,7 +56,7 @@ public class Arena extends JDialog {
 
   public Arena() {
     setContentPane(contentPane);
-    setModal(true);
+    setModal(false);
     getRootPane().setDefaultButton(buttonOK);
 
     buttonOK.addActionListener(new ActionListener() {
@@ -94,11 +94,4 @@ public class Arena extends JDialog {
     dispose();
   }
 
-  public static void main(String[] args) {
-    Arena arena = new Arena();
-    arena.pack();
-    arena.setLocationRelativeTo(null);
-    arena.setVisible(true);
-    System.exit(0);
-  }
 }
