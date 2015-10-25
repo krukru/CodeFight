@@ -1,6 +1,6 @@
 # CodeFight
 
-[![Build Status](https://travis-ci.org/krukru/CodeFight.svg)](https://travis-ci.org/krukru/CodeFight)
+[![Build Status](https://travis-ci.org/krukru/CodeFight.svg?branch=dev)](https://travis-ci.org/krukru/CodeFight)
 
 CodeFight is a game between two AI fighters. The players program their strategies and they are compared in a deadly fight to decide the winner!
 
