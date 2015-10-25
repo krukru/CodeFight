@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="codefight" default="all">
+
+
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!-- 
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="700m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.bundle/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/.tox/**"/>
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/RCS/**"/>
+        <exclude name="**/SCCS/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/rcs/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.war"/>
+        <include name="*.ear"/>
+        <include name="*.apk"/>
+        <include name="*.zip"/>
+        <include name="*.swc"/>
+        <include name="*.ane"/>
+        <include name="*.egg"/>
+        <include name="*.jar"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+        <exclude name="**/?*.aj"/>
+    </patternset>
+
+    <!-- Modules -->
+
+
+    <!-- Module codefight -->
+
+    <dirname property="module.codefight.basedir" file="${ant.file}"/>
+
+
+
+    <property name="compiler.args.codefight" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+
+    <property name="codefight.output.dir" value="${module.codefight.basedir}/out/production/codefight"/>
+    <property name="codefight.testoutput.dir" value="${module.codefight.basedir}/out/test/codefight"/>
+
+    <path id="codefight.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="codefight.module.production.classpath">
+        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="lib/junit-4.11.jar"/>
+    </path>
+
+    <path id="codefight.runtime.production.module.classpath">
+        <pathelement location="${codefight.output.dir}"/>
+        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="lib/junit-4.11.jar"/>
+    </path>
+
+    <path id="codefight.module.classpath">
+        <pathelement location="${codefight.output.dir}"/>
+        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="lib/junit-4.11.jar"/>
+    </path>
+
+    <path id="codefight.runtime.module.classpath">
+        <pathelement location="${codefight.testoutput.dir}"/>
+        <pathelement location="${codefight.output.dir}"/>
+        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="lib/hamcrest-library-1.3.jar"/>
+        <pathelement location="lib/junit-4.11.jar"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.codefight">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.codefight">
+        <patternset refid="excluded.from.module.codefight"/>
+    </patternset>
+
+    <path id="codefight.module.sourcepath">
+        <dirset dir="${module.codefight.basedir}">
+            <include name="src"/>
+            <include name="lib"/>
+        </dirset>
+    </path>
+
+    <path id="codefight.module.test.sourcepath">
+        <dirset dir="${module.codefight.basedir}">
+            <include name="test"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.codefight" depends="compile.module.codefight.production,compile.module.codefight.tests" description="Compile module codefight"/>
+
+    <target name="compile.module.codefight.production" description="Compile module codefight; production classes">
+        <mkdir dir="${codefight.output.dir}"/>
+        <javac destdir="${codefight.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+            <compilerarg line="${compiler.args.codefight}"/>
+            <bootclasspath refid="codefight.module.bootclasspath"/>
+            <classpath refid="codefight.module.production.classpath"/>
+            <src refid="codefight.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.codefight"/>
+        </javac>
+
+        <copy todir="${codefight.output.dir}">
+            <fileset dir="${module.codefight.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+            <fileset dir="${module.codefight.basedir}/lib">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.codefight.tests" depends="compile.module.codefight.production" description="compile module codefight; test classes" unless="skip.tests">
+        <mkdir dir="${codefight.testoutput.dir}"/>
+        <javac destdir="${codefight.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+            <compilerarg line="${compiler.args.codefight}"/>
+            <bootclasspath refid="codefight.module.bootclasspath"/>
+            <classpath refid="codefight.module.classpath"/>
+            <src refid="codefight.module.test.sourcepath"/>
+            <patternset refid="excluded.from.compilation.codefight"/>
+        </javac>
+
+        <copy todir="${codefight.testoutput.dir}">
+            <fileset dir="${module.codefight.basedir}/test">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean.module.codefight" description="cleanup module">
+        <delete dir="${codefight.output.dir}"/>
+        <delete dir="${codefight.testoutput.dir}"/>
+    </target>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.codefight" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, compile.module.codefight" description="build all modules"/>
+
+
+    <path id="classpath.base" />
+
+
+    <path id="classpath.test">
+        <pathelement location="lib/junit-4.11.jar" />
+        <pathelement location="lib/hamcrest-core-1.3.jar" />
+        <pathelement location="${codefight.output.dir}"/>
+        <path refid="classpath.base" />
+    </path>
+    <!-- Test and build all files  -->
+    <!-- To run this: use "ant" (default) or "ant run" -->
+    <target name="test" depends="all">
+        <junit printsummary="yes" showoutput="true" haltonfailure="yes">
+            <classpath>
+                <path refid="classpath.test" />
+                <pathelement location="${codefight.testoutput.dir}"/>
+            </classpath>
+            <formatter type="brief" usefile="false" />
+            <batchtest>
+                <fileset dir="test">
+                    <include name="**/*Test*.java"/>
+                    <exclude name="**/Abstract*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="all" depends="build.modules" description="build all"/>
+</project>
