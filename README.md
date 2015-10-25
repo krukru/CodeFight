@@ -44,3 +44,7 @@ Recovering stamina lasts 1 second and recovers 25 stamina.
 # Conditional strategies
 
 The AbstractFighterStrategy has a virtual method registerConditionalStrategies(). Here you can queue up conditional strategies that will trigger only if the condition is met. For example, you can have a strategy when your opponent is in a blocking stance
+
+# Examples
+
+You can find some examples in the kru.codefight.strategy.examples package. Good luck!
