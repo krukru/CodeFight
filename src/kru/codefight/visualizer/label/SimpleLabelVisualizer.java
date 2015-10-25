@@ -23,7 +23,7 @@ public class SimpleLabelVisualizer extends AbstractFightVisualizer {
       arena.getRedStamina().setText(text2);
     } else {
       arena.getBlueCasting().setText(text1);
-      arena.getBlueStamina().setText(text2);
+      arena.getBlueStamina().setText(text2);a
     }
   }
 
