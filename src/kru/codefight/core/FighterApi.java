@@ -13,6 +13,9 @@ public class FighterApi {
     this.fighter = fighter;
   }
 
+  //TODO before making any call from the api, you must check if the fighter has been knocked out
+  //because he won't stop fighting until one tick od act() finishes (could be a few more punches)
+
   public void attack(AbstractAttack attack) {
     resolveAccumulatedStun();
     if (fighter.getStance() == Stance.BLOCKING) {
