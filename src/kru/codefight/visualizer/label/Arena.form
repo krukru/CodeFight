@@ -127,7 +127,23 @@
               <grid row="0" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="BlueFighter"/>
+              <text value="Blue Fighter"/>
+            </properties>
+          </component>
+          <component id="9e3d7" class="javax.swing.JLabel" binding="redCasting">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Nothing yet.."/>
+            </properties>
+          </component>
+          <component id="e38ca" class="javax.swing.JLabel" binding="blueCasting">
+            <constraints>
+              <grid row="2" column="4" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Nothing yet.."/>
             </properties>
           </component>
         </children>
