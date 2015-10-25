@@ -5,7 +5,9 @@
 CodeFight is a game between two AI fighters. The players program their strategies and they are compared in a deadly fight to decide the winner!
 
 To get starting, all you need to do is extend the kru.codefight.strategy.AbstractFighterStrategy class and implement the act() method.
-The act method is the main strategy for your fighter. The method will get executed in a loop, as long as the battle is running. You can customize multiple strategies based on what your opponent is doing via the registerConditionalStrategies virtual method.
+The act method is the main strategy for your fighter. The method will get executed in a loop, as
+long as the battle is running. You can also customize multiple strategies based on what your
+opponent is doing, see Conditional Strategies
 
 All the actions you can perform are encapsulared in the kru.codefight.core.FighterApi, which you access via the protected method Do().
 
@@ -43,7 +45,7 @@ Every fighter has a maximum od 100 stamina. Each attack costs some amount of sta
 
 Recovering stamina lasts 1 second and recovers 25 stamina.
 
-# Conditional strategies
+# Conditional Strategies
 
 The AbstractFighterStrategy has a virtual method registerConditionalStrategies(). Here you can queue up conditional strategies that will trigger only if the condition is met. For example, you can have a strategy when your opponent is in a blocking stance
 
